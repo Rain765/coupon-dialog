@@ -18,7 +18,7 @@ ZamCash Reward Motion — 一圈最终版（2026-10-15）
 - 就绪装饰仅播放 2 次，正常播放最迟 8600 ms 全部停止。
 
 体积
-HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.7 KB，精确体积与剩余预算见交付包 asset-manifest.json。
+HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 76.9 KB，精确体积与剩余预算见交付包 asset-manifest.json。
 不含 HTTP 头、交付文档和 ZIP 容器开销。线上需为 HTML/SVG 开启 gzip；Python 预览服务不自动压缩。
 
 降级
@@ -32,7 +32,7 @@ HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.7 KB，精确体积与剩
 - 最终版每 5 ms 采样旋转矩阵并展开角度，累计 360°；粒子数量 18；旋转时长 1200 ms。
 - 正常申请入口、低性能模式与系统减少动态模式通过，逐帧预览完成。
 - 先前版本已检查重播、窄屏、暂停、素材失败/延迟和离线；本次保留一圈参数，更新召回文案、动态数据与接入说明。
-- 原始两张 WebP、README.txt、asset-prompts.txt 不变。目标市场低端手机真机尚未验证。
+- 开场 star-v2.webp、原始 README.txt、asset-prompts.txt 不变；reward-v2.webp 按要求更新为红色飘带版本。目标市场低端手机真机尚未验证。
 
 业务接入
 - 6 个自然日内申请，还款时抵扣；不是 6 天内还款。
@@ -58,3 +58,8 @@ HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.7 KB，精确体积与剩
 2026-10-16 倒计时底块调整
 - 数字从 28px 调整为 24px；每组两位数字使用白色背景、6px 圆角，单位保持 13px。
 - 卡片渐变调整为 #ffe6c5 → #fff0dc → #fff，使白色底块清晰可见。倒计时逻辑及动效不变。
+
+2026-10-16 浅红配色与飘带
+- 卡片背景改为 #fbdde1 → #fff0f2 → #fff；保留白色倒计时底块。
+- reward-v2.webp 使用内置图像编辑工具生成的红色飘带版本，480×320，WebP quality 85，透明背景。SVG 降级飘带同步改红。
+- 开场星星、业务逻辑和一圈动画不变；编辑提示词见 handoff/ASSET-CHANGES.md。

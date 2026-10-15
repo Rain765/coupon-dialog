@@ -1,7 +1,7 @@
 # ZamCash 奖励动效 · 前端交付
 
 最终规格：**卡片绕竖直中轴（Y 轴）左右翻转 1 圈，累计 360°。**
-版本：`final-2026-10-16-countdown-tiles`。标题下方倒计时采用 24px 数字、白色圆角底块与 d/h/m/s 简写，每秒更新；保留券角标、移动端线条修复和一圈动效。
+版本：`final-2026-10-16-red-ribbon`。标题下方倒计时采用 24px 数字、白色圆角底块与 d/h/m/s 简写，每秒更新；保留券角标、移动端线条修复和一圈动效。
 
 ## 快速查看
 
@@ -20,10 +20,11 @@ python3 -m http.server 8765
 | --- | --- |
 | `demo/index.html` | 已确认的完整演示，内含 CSS、JavaScript 与 SVG 兜底 |
 | `demo/star-v2.webp` | 开场大星星及爆散小金星共用素材 |
-| `demo/reward-v2.webp` | 卡片顶部星星、金币、丝带素材 |
+| `demo/reward-v2.webp` | 卡片顶部星星、金币、红色飘带素材 |
 | `demo/assets/` | 15 个 SVG、1 个 PNG，来自项目设计稿 |
 | `docs/FRONTEND-INTEGRATION.md` | 接入、精确时间线、缓动参数、状态与降级方式 |
 | `docs/ZEPTO-SUI-INTEGRATION.md` | 现有框架适配清单、后端字段契约、Zepto 请求示例及联调边界 |
+| `docs/ASSET-CHANGES.md` | 红色飘带素材的编辑方式、提示词与压缩规格 |
 | `asset-manifest.json` | 文件 SHA-256、原始大小、gzip 估算、源码提交号 |
 | `SHA256SUMS.txt` | 包内文件校验表，可执行 `shasum -a 256 -c SHA256SUMS.txt` |
 | `references/` | 原始 README、素材提示词和 Figma 来源；原始 README 的旧文案/体积不是当前规格 |
@@ -33,7 +34,7 @@ python3 -m http.server 8765
 - 18 个爆散粒子：14 颗金星 + 4 个微光点，保留金色拖尾。
 - 卡片 1 圈翻转：0.6–1.8 秒；连续放大：0.6–2.0 秒；2.2 秒后按钮可用。
 - 右侧文案恢复为 Pay on time / and reduce your loan cost；券高保持紧凑，申请倒计时位于标题下方，黑字、数字加粗，显示 d/h/m/s 四段倒计时；券角标为 Repayment discount；金额动态绑定，保留配色和素材。模拟默认 K25，真实接入读取后端字段。
-- 运行资源约 **74.7 KB**，准确字节数见清单。口径为 HTML/SVG gzip level 6 + PNG/WebP 原始字节，不含 HTTP 头、文档和 ZIP 容器开销。
+- 运行资源约 **76.9 KB**，准确字节数见清单。口径为 HTML/SVG gzip level 6 + PNG/WebP 原始字节，不含 HTTP 头、文档和 ZIP 容器开销。
 - 线上要为 HTML/SVG 启用 gzip。上述 Python 预览服务器不会自动启用 gzip。
 
 ## 交付边界

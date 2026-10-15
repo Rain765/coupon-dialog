@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'reward-motion-v2'
 OUTPUT = ROOT / 'output' / 'zamcash-reward-final.zip'
 PREFIX = 'zamcash-reward-final/'
-VERSION = 'final-2026-10-16-countdown-tiles'
+VERSION = 'final-2026-10-16-red-ribbon'
 
 
 def sha(data):
@@ -38,6 +38,7 @@ def main():
         'README.md': ROOT / 'handoff/README.md',
         'docs/FRONTEND-INTEGRATION.md': ROOT / 'handoff/FRONTEND-INTEGRATION.md',
         'docs/ZEPTO-SUI-INTEGRATION.md': ROOT / 'handoff/ZEPTO-SUI-INTEGRATION.md',
+        'docs/ASSET-CHANGES.md': ROOT / 'handoff/ASSET-CHANGES.md',
         'references/original-README.txt': SOURCE / 'README.txt',
         'references/asset-prompts.txt': SOURCE / 'asset-prompts.txt',
         'references/FIGMA-SOURCE.txt': SOURCE / 'FIGMA-SOURCE.txt',
