@@ -7,19 +7,19 @@ async (page) => {
   await page.waitForTimeout(2400);
   const initial = await page.evaluate(() => ({
     title: document.querySelector('.reward-card h2').textContent,
-    copy: document.querySelector('#reward-sub').textContent,
+    copy: document.querySelector('#reward-sub').innerText,
     label: document.querySelector('.coupon-tag').textContent,
     button: document.querySelector('#claim').textContent,
     deadline: document.querySelector('#coupon-countdown').dateTime,
     time: document.querySelector('#coupon-countdown').textContent,
     enabled: !document.querySelector('#claim').disabled,
   }));
-  check(initial.title === 'Welcome back!' && initial.label === 'Repayment discount' && initial.button === 'Apply now' && initial.copy === 'Apply before this offer expires. Save K25 when you repay your loan.', 'approved copy');
+  check(initial.title === 'Welcome back!' && /^\d{2} days \d{2} hrs$/.test(initial.label) && initial.button === 'Apply now' && initial.copy === 'Pay on time\nand reduce your loan cost', 'approved copy');
   check(initial.enabled, 'animation unlock');
   await page.reload(); await page.waitForTimeout(2400);
   check(await page.locator('#coupon-countdown').getAttribute('datetime') === initial.deadline, 'reload preserves deadline');
   await page.locator('#replay').click(); await page.waitForTimeout(2400);
-  check(await page.locator('#coupon-countdown').getAttribute('datetime') === initial.deadline && await page.locator('#coupon-countdown').textContent() !== initial.time, 'replay does not renew countdown');
+  check(await page.locator('#coupon-countdown').getAttribute('datetime') === initial.deadline, 'replay does not renew countdown');
   const checks = await page.evaluate(async () => {
     const api = window.RewardCoupon, $ = s => document.querySelector(s);
     const checks = []; const test = (ok, name) => { if (!ok) throw new Error(name); checks.push(name); };
@@ -29,8 +29,11 @@ async (page) => {
     const c = {id:'test',amount:50,eligible:true,status:'available',serverNow:n,expiresAt:n+120000};
     const settings = {lowPerformance:true,onApply:()=>{}};
     test(await api.show(c,settings), 'server-time eligible show');
-    test($('#reward-amount').textContent === '50' && $('#copy-amount').textContent === '50' && !$('#claim').disabled && !$('#screen').classList.contains('is-playing'), 'dynamic amount/static mode');
-    test($('#coupon-countdown').textContent.startsWith('00:0'), 'server clock used');
+    test($('#reward-amount').textContent === '50' && !$('#claim').disabled && !$('#screen').classList.contains('is-playing'), 'dynamic amount/static mode');
+    test($('#coupon-countdown').textContent === '00 days 00 hrs', 'server clock used');
+    await api.show({...c,expiresAt:n+3600100},settings);
+    test($('#coupon-hours').textContent==='01','hour display before boundary');await wait(1100);
+    test($('#coupon-hours').textContent==='00'&&!$('#screen').classList.contains('is-used'),'hour boundary updates without early expiry');
     for (const patch of [{eligible:false},{status:'bound'},{amount:0},{amount:'25'},{amount:10000},{expiresAt:n},{id:''},{serverNow:null}]) {
       test(await api.show({...c,...patch},settings) === false && $('#screen').classList.contains('is-used') && $('#claim').disabled, 'reject '+JSON.stringify(patch));
     }
@@ -77,7 +80,7 @@ async (page) => {
   for (const width of [320,390,1200]) {
     await page.setViewportSize({width,height:1000});
     await page.evaluate(()=>window.RewardCoupon.show({id:'layout',amount:9999,eligible:true,status:'available',serverNow:Date.now(),expiresAt:Date.now()+60000},{lowPerformance:true,onApply:()=>{}}));
-    const fits = await page.evaluate(()=>{const s=document.querySelector('.screen').getBoundingClientRect(),c=document.querySelector('.reward-card').getBoundingClientRect(),p=document.querySelector('#reward-sub'),tag=document.querySelector('.coupon-tag').getBoundingClientRect();const range=document.createRange();range.selectNodeContents(p);const text=range.getBoundingClientRect();return document.documentElement.scrollWidth<=innerWidth&&c.bottom<=s.bottom&&p.scrollWidth<=p.clientWidth&&text.top>=tag.bottom;});
+    const fits = await page.evaluate(()=>{const s=document.querySelector('.screen').getBoundingClientRect(),c=document.querySelector('.reward-card').getBoundingClientRect(),p=document.querySelector('#reward-sub'),tag=document.querySelector('.coupon-tag').getBoundingClientRect();const range=document.createRange();range.selectNodeContents(p);const text=range.getBoundingClientRect();return document.documentElement.scrollWidth<=innerWidth&&c.bottom<=s.bottom&&p.scrollWidth<=p.clientWidth&&text.top>=tag.bottom&&document.querySelector('.reward-card h2').nextElementSibling.classList.contains('coupon-ticket')&&getComputedStyle(document.querySelector('#coupon-hours')).fontWeight==='700'&&getComputedStyle(document.querySelector('#coupon-hours')).color==='rgb(255, 255, 255)'&&document.querySelector('.coupon-ticket').getBoundingClientRect().height<112;});
     check(fits,'layout fits '+width);
     await page.locator('#device').screenshot({path:'output/playwright/recall-'+width+'.png'});
   }

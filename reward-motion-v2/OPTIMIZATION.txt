@@ -18,7 +18,7 @@ ZamCash Reward Motion — 一圈最终版（2026-10-15）
 - 就绪装饰仅播放 2 次，正常播放最迟 8600 ms 全部停止。
 
 体积
-HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.3 KB，精确体积与剩余预算见交付包 asset-manifest.json。
+HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.2 KB，精确体积与剩余预算见交付包 asset-manifest.json。
 不含 HTTP 头、交付文档和 ZIP 容器开销。线上需为 HTML/SVG 开启 gzip；Python 预览服务不自动压缩。
 
 降级
@@ -39,3 +39,8 @@ HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.3 KB，精确体积与剩
 - RewardCoupon.show 接收 id、amount、eligible、status、expiresAt、serverNow；生产初始化必须禁用默认模拟券。
 - 只有 eligible=true、status=available 且未过期时展示；按钮通过 onApply 交给宿主申请流程。
 - 过期隐藏、重复点击保护、组件 destroy、申请失败事件与更新竞争处理详见接入说明。
+
+紧凑排版更新
+- 右侧说明恢复为 Pay on time / and reduce your loan cost，显式换行。
+- 标题下方小字移除；倒计时置于券右上角红色角标内，仅天/小时，白字、数字加粗。
+- 券最小高度 76px；小时显示向下取整，真实过期判断仍按毫秒截止时间。

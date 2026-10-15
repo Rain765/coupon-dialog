@@ -95,8 +95,8 @@
 .welcome-star{width:200px;height:200px;left:calc(50% - 100px);top:270px}.hero{top:205px}.aura{top:164px}.arrival-flash{top:235px}.ring{top:280px}.ring.two{top:256px}.s1{top:274px}.s2{top:295px}.s3{top:228px}.s4{top:237px}.s5{top:354px}.s6{top:352px}.is-used .scene,.is-used .veil{display:none}
 @media(max-width:850px){.layout{grid-template-columns:1fr 391px;gap:24px}.shell{padding-inline:20px}}@media(max-width:700px){.layout{display:flex}.device{max-width:100%;height:828px}.intro h1{font-size:38px}.intro h1 br{display:block}.shell{padding-inline:16px}.loan-header h2{font-size:16px}.browser-toolbar{gap:12px}.address{margin-left:-5px;padding-inline:12px}.reward-card h2{font-size:22px}.reward-sub{padding:22px 10px 12px;font-size:13px;line-height:18px}.coupon-ticket{min-height:82px}.coupon-divider{top:16px}.reward-value{font-size:30px}.loan-breakdown{font-size:12px}.mobile-money{gap:5px}.loan-amount{padding-inline:0;gap:8px}.minus,.plus{width:32px}.minus:before,.plus:before{left:2px}.plus:after{left:14px}}
 @media(max-width:360px){.loan-header h2{font-size:14px}.large-amount .reward-value{font-size:22px}}
-/* Keep the approved copy readable within the existing ticket. */
-.coupon-ticket{min-height:112px}.reward-sub{padding:28px 10px 12px}.coupon-divider{top:32px}.benefit-countdown{flex-wrap:wrap;gap:4px 8px}.benefit-countdown time{font-variant-numeric:tabular-nums;color:var(--zam-ink)}
+/* Compact ticket; the application deadline lives in the top-right corner. */
+.coupon-ticket{min-height:76px}.reward-sub{padding:24px 10px 10px}.coupon-divider{top:calc(50% - 23.5px)}.coupon-tag{white-space:nowrap;font-variant-numeric:tabular-nums}.coupon-tag b{font-weight:700;color:#fff}
 </style>
 </head>
 <body>
@@ -105,7 +105,7 @@
 <main class="layout">
 <section class="intro" aria-labelledby="title"><div class="eyebrow">轻量动效 · 可交互演示</div><h1 id="title">Welcome<br><span>back!</span></h1><p class="desc">Apply before this offer expires.</p><div class="pills"><span class="pill">无第三方依赖</span><span class="pill">WebP + SVG 素材</span><span class="pill">离线可播放</span></div>
 <div class="controls"><label class="control-label" for="amount">演示优惠券金额</label><div class="input-row"><div class="amount-box"><span class="currency">K</span><input id="amount" type="number" min="1" max="9999" step="1" value="25" inputmode="numeric"></div><button class="replay" id="replay" type="button">↻ 重播动效</button></div><label class="toggle"><input type="checkbox" id="low-motion">低性能模式 · 直接展示奖励</label></div>
-<div class="spec"><div><strong>74.3 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
+<div class="spec"><div><strong>74.2 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
 <section class="preview" aria-label="手机内奖励效果预览"><div class="device" id="device"><div class="screen is-loading is-used" id="screen">
 <div class="loan-page" id="loan-page" aria-hidden="true" lang="en">
 <div class="zam-statusbar"><img src="assets/bcb84.svg" alt="9:41"><img src="assets/d66f0.svg" alt=""></div>
@@ -124,8 +124,8 @@
 <div class="veil" aria-hidden="true"></div><section class="scene" aria-label="Welcome back!" lang="en"><div class="aura" aria-hidden="true"></div><div class="ring" aria-hidden="true"></div><div class="ring two" aria-hidden="true"></div>
 <div class="welcome-star" aria-hidden="true"><img src="star-v2.webp" width="360" height="360" alt="" decoding="async"><span class="star-sheen"></span></div><div class="arrival-flash" aria-hidden="true"></div><div class="burst-layer" id="burst" aria-hidden="true"></div><div class="reward-reveal"><div class="reward-turn"><div class="hero" aria-hidden="true"><div class="hero-glow"></div><img class="hero-art" src="reward-v2.webp" width="480" height="320" alt="" decoding="async"><svg viewBox="0 0 200 166" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gold" x1=".2" y1="0" x2=".8" y2="1"><stop stop-color="#fffbd0"/><stop offset=".32" stop-color="#ffe58b"/><stop offset=".7" stop-color="#f4b83f"/><stop offset="1" stop-color="#df8e24"/></linearGradient><linearGradient id="edge" x2=".4" y2="1"><stop stop-color="#ffdf78"/><stop offset="1" stop-color="#c98022"/></linearGradient><radialGradient id="shine" cx=".28" cy=".2" r=".8"><stop stop-color="#fff" stop-opacity=".94"/><stop offset=".45" stop-color="#fff8cf" stop-opacity=".2"/><stop offset="1" stop-color="#ffcb53" stop-opacity="0"/></radialGradient><linearGradient id="coin" x2="0" y2="1"><stop stop-color="#ffdd72"/><stop offset=".5" stop-color="#ffc34d"/><stop offset="1" stop-color="#d79225"/></linearGradient><linearGradient id="ribbon" x2="1" y2="1"><stop stop-color="#e4b1e9"/><stop offset="1" stop-color="#aa74c7"/></linearGradient><path id="star" d="M88 24C92 14 101 14 106 25L119 51Q121 56 127 57L156 61C168 62 171 71 162 80L141 101Q137 105 138 111L143 140C145 153 137 157 127 152L101 138Q97 136 92 139L66 152C55 157 48 151 51 139L56 110Q57 105 52 100L31 80C22 72 25 63 38 61L67 57Q73 56 75 51Z"/></defs><ellipse cx="103" cy="148" rx="63" ry="9" fill="#80522b" opacity=".10"/><path d="M28 115q-20-15-9-32 9-12 20 0L28 99l22 8-6 17Z" fill="url(#ribbon)"/><path d="M149 54c31-22 45-5 22 14-12 10-28 10-23 1 5-8 24-9 30-2" fill="none" stroke="#e9bf70" stroke-width="4" stroke-linecap="round"/><use href="#star" fill="url(#edge)" transform="translate(0 5)"/><use href="#star" fill="url(#gold)" stroke="#ffe9a0" stroke-width="1.5"/><use href="#star" fill="url(#shine)"/><path d="M82 48l9-21q5-9 10 0" fill="none" stroke="#fffde2" stroke-width="5" stroke-linecap="round" opacity=".8"/><g class="coin"><path d="M122 136v10c0 11 57 11 57 0v-10" fill="url(#coin)"/><ellipse cx="150.5" cy="136" rx="28.5" ry="8" fill="#ffe793" stroke="#edb347"/><path d="M127 143v6m8-5v7m9-6v7m9-7v7m9-8v7m9-10v7" stroke="#b67920" opacity=".5"/><path d="M126 124v10c0 11 57 11 57 0v-10" fill="url(#coin)"/><ellipse cx="154.5" cy="124" rx="28.5" ry="8" fill="#fff0a7" stroke="#eeb745"/><ellipse cx="154.5" cy="124" rx="21" ry="4.8" fill="none" stroke="#e7b344"/><path d="M130 131v6m8-5v7m9-6v7m9-7v7m9-8v7m9-10v7" stroke="#b67920" opacity=".45"/><path d="M149 122l5-2 5 2-5 3Z" fill="#d9a23a"/></g></svg></div>
 <span class="spark s1" aria-hidden="true">✦</span><span class="spark s2" aria-hidden="true">✦</span><span class="spark s3" aria-hidden="true">✧</span><span class="spark s4" aria-hidden="true">✦</span><span class="spark s5" aria-hidden="true">✦</span><span class="spark s6" aria-hidden="true">✧</span>
-<div class="reward-card"><h2>Welcome back!</h2><div class="benefit-countdown"><span>Apply within</span><time id="coupon-countdown" role="timer">—</time></div>
-<div class="coupon-ticket"><span class="coupon-tag">Repayment discount</span><div class="reward-value"><span>K</span><span id="reward-amount">25</span></div><span class="coupon-divider" aria-hidden="true"></span><p class="reward-sub" id="reward-sub">Apply before this offer expires. Save K<span id="copy-amount">25</span> when you repay your loan.</p></div>
+<div class="reward-card"><h2>Welcome back!</h2>
+<div class="coupon-ticket"><time class="coupon-tag" id="coupon-countdown" role="timer" aria-label="Time left to apply"><b id="coupon-days">00</b> days <b id="coupon-hours">00</b> hrs</time><div class="reward-value"><span>K</span><span id="reward-amount">25</span></div><span class="coupon-divider" aria-hidden="true"></span><p class="reward-sub" id="reward-sub">Pay on time<br>and reduce your loan cost</p></div>
 <button class="claim" type="button" id="claim" disabled>Apply now</button></div></div></div></section></div></div><div class="preview-caption"><span><i class="live-dot"></i>LIVE PREVIEW</span><span>WebP + CSS + JavaScript</span></div><p class="sr-only" role="status" id="announcement"></p></section>
 </main><footer class="footer"><span>REWARD MOTION / V2 质感与节奏优化</span><span>演示界面 · 不连接真实奖励或支付</span></footer>
 </div>
@@ -156,8 +156,8 @@ $('loan-page').setAttribute('aria-hidden','false');$('announcement').textContent
 }
 function tick(){
 if(!usable()){close();return false}
-const seconds=Math.max(0,Math.ceil((coupon.expiresAt-now())/1000)),days=Math.floor(seconds/86400),hours=Math.floor(seconds%86400/3600),minutes=Math.floor(seconds%3600/60),rest=seconds%60;
-$('coupon-countdown').textContent=(days?days+'d ':'')+[hours,minutes,rest].map(n=>String(n).padStart(2,'0')).join(':');
+const totalHours=Math.max(0,Math.floor((coupon.expiresAt-now())/3600000));
+$('coupon-days').textContent=String(Math.floor(totalHours/24)).padStart(2,'0');$('coupon-hours').textContent=String(totalHours%24).padStart(2,'0');
 return true;
 }
 function ready(){
@@ -169,7 +169,7 @@ async function play(){
 if(destroyed||applying)return false;
 close();if(!usable())return false;
 const thisRun=run,value=coupon.amount.toLocaleString('en-US');
-amount.value=coupon.amount;$('reward-amount').textContent=value;$('copy-amount').textContent=value;claim.textContent='Apply now';
+amount.value=coupon.amount;$('reward-amount').textContent=value;claim.textContent='Apply now';
 $('coupon-countdown').dateTime=new Date(coupon.expiresAt).toISOString();
 $('applied-coupon').hidden=true;$('loan-page').setAttribute('aria-hidden','true');
 screen.classList.remove('is-used');screen.classList.add('is-loading');screen.classList.toggle('low-motion',options.lowPerformance===true||low.checked);screen.classList.toggle('large-amount',coupon.amount>999);
