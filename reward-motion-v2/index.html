@@ -18,38 +18,52 @@
 }
 .star-sheen:after{content:'';position:absolute;inset:-15% -60%;background:linear-gradient(110deg,transparent 40%,#fff9e516 46%,#fffdf6a6 50%,#fff9e524 54%,transparent 60%);opacity:0;transform:translateX(-45%)}
 .welcome-star:before{content:'';position:absolute;inset:-25%;z-index:-1;background:radial-gradient(ellipse,#ffe7a724,transparent 65%)}
-/* 0–.48s arrival, .48–1.04s hold, 1.04–1.6s handoff, 2.2s ready. */
-.is-playing .veil{animation:veil-in .28s both}
-.is-playing .welcome-star{animation:star-arrive 1.6s both}
-.is-playing .star-sheen:after{animation:satin-sweep .64s .48s both cubic-bezier(.3,0,.2,1)}
-.is-playing .hero{animation:hero-settle .7s 1.3s both linear}
-.is-playing .reward-card{animation:card-reveal .82s 1.24s both cubic-bezier(.22,.75,.22,1)}
-.is-playing .arrival-flash{animation:flash .55s 1.24s both}
-.is-playing .hero-glow{animation:glow-breathe .72s 1.3s both}
-.is-playing .ring{animation:ring-out .8s .2s both}
-.is-playing .ring.two{animation:ring-out .9s .32s both}
-.is-playing .spark{animation:spark-burst .75s 1.35s both}
-.is-playing .s2,.is-playing .s4,.is-playing .s6{animation-delay:1.45s}
-.is-playing .claim,.is-playing .scene-caption{animation:veil-in .3s 1.9s both}
+/* One burst bridges the opening star and the shared card/hero reveal. */
+.reward-reveal{position:absolute;inset:0;transform-origin:50% 370px}
+.burst-layer{position:absolute;inset:0;z-index:4;pointer-events:none}
+.burst-ray{position:absolute;left:50%;top:370px;width:0;height:0;transform:rotate(var(--angle))}
+.burst-flight{position:absolute;left:0;top:0;width:var(--size);height:var(--size);margin:calc(var(--size) / -2);opacity:0}
+.burst-star{position:absolute;inset:0;background:url('star-v2.webp') center/contain no-repeat}
+.burst-flight:after{content:'';position:absolute;right:50%;top:calc(50% - .75px);width:var(--trail);height:1.5px;border-radius:50%;background:linear-gradient(90deg,transparent,#ffe4a055 48%,#fff7d9d9);transform-origin:100% 50%;opacity:0}
+.burst-ray:nth-child(3n) .burst-flight:after{height:1px}
+.burst-ray:nth-child(4n) .burst-star{background:linear-gradient(135deg,#fffdf0,#ffe4a0 50%,#e9b45c);clip-path:polygon(50% 0,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0 50%,39% 38%)}
+.is-playing .veil{animation:veil-in .24s both}
+.is-playing .welcome-star{animation:star-arrive .64s both}
+.is-playing .star-sheen:after{animation:satin-sweep .38s .12s both cubic-bezier(.3,0,.2,1)}
+.is-playing .burst-flight{animation:star-flight var(--life) var(--delay) both cubic-bezier(.12,.64,.22,1)}
+.is-playing .burst-star{animation:star-spin var(--life) var(--delay) both ease-out}
+.is-playing .burst-flight:after{animation:light-trail var(--life) var(--delay) both linear}
+.is-playing .reward-reveal{animation:reward-reveal 1s .6s both}
+.is-playing .arrival-flash{animation:flash .46s .38s both}
+.is-playing .hero-glow{animation:glow-breathe .8s .64s both}
+.is-playing .ring{animation:ring-out .72s .4s both}
+.is-playing .ring.two{animation:ring-out .8s .46s both}
+.is-playing .spark{animation:spark-burst .8s .98s both}
+.is-playing .s2,.is-playing .s4,.is-playing .s6{animation-delay:1.06s}
+.is-playing .claim,.is-playing .scene-caption{animation:veil-in .75s 1.45s both}
 .is-playing .claim:disabled{color:#fff8e8;background:transparent;border-color:#ffffff36}
 .is-ready .hero{animation:float 3.2s ease-in-out 2}
 .is-ready .spark{animation:twinkle 2.8s ease-in-out 2}
 .is-ready .s2,.is-ready .s4,.is-ready .s6{animation-delay:.8s}
 @keyframes veil-in{from{opacity:0}to{opacity:1}}
 @keyframes star-arrive{
-0%{opacity:0;transform:translateY(26px) scale(.45) rotate(-12deg);animation-timing-function:cubic-bezier(.16,.8,.24,1)}
-28%{opacity:1;transform:translateY(-5px) scale(1.055) rotate(3deg);animation-timing-function:ease-out}
-43%{opacity:1;transform:translateY(0) scale(1) rotate(-1deg);animation-timing-function:ease-in-out}
-65%{opacity:1;transform:translateY(-2px) scale(1) rotate(0);animation-timing-function:cubic-bezier(.5,0,.2,1)}
-81.25%{opacity:1;transform:translate(-12px,-91px) scale(.86) rotate(-3deg);animation-timing-function:linear}
-93.75%{opacity:1;transform:translate(-12px,-91px) scale(.86) rotate(-3deg)}
-100%{opacity:0;transform:translate(-12px,-91px) scale(.86) rotate(-3deg)}}
+0%{opacity:0;transform:translateY(18px) scale(.32) rotate(-16deg);animation-timing-function:cubic-bezier(.16,.8,.24,1)}
+42%{opacity:1;transform:translateY(-3px) scale(1.12) rotate(4deg);animation-timing-function:ease-in-out}
+64%{opacity:1;transform:translateY(0) scale(1.04) rotate(-2deg);animation-timing-function:cubic-bezier(.3,0,.7,1)}
+80%{opacity:.9;transform:scale(1.18) rotate(2deg)}
+100%{opacity:0;transform:scale(.4) rotate(8deg)}}
 @keyframes satin-sweep{0%{opacity:0;transform:translateX(-45%)}20%{opacity:.42}75%{opacity:.3}100%{opacity:0;transform:translateX(45%)}}
-@keyframes hero-settle{0%{opacity:0;transform:translateY(2px) scale(.99)}28%{opacity:1;transform:none}100%{opacity:1;transform:none}}
-@keyframes card-reveal{0%{opacity:0;transform:translateY(22px) scale(.92,.88)}60%{opacity:1;transform:translateY(-2px) scale(1.01)}100%{opacity:1;transform:none}}
-@keyframes flash{0%{opacity:0;transform:scale(.55)}35%{opacity:.32;transform:scale(.9)}100%{opacity:0;transform:scale(1.1)}}
+@keyframes star-flight{0%{opacity:0;transform:translateX(18px)}8%{opacity:1}58%{opacity:.95}100%{opacity:0;transform:translateX(var(--reach))}}
+@keyframes star-spin{0%{transform:rotate(calc(0deg - var(--angle))) scale(.45)}20%{transform:rotate(calc(35deg - var(--angle))) scale(1)}100%{transform:rotate(calc(var(--spin) - var(--angle))) scale(.55)}}
+@keyframes light-trail{0%{opacity:0;transform:scaleX(.15)}12%{opacity:.85;transform:scaleX(1)}38%{opacity:.6;transform:scaleX(.85)}78%,100%{opacity:0;transform:scaleX(.08)}}
+@keyframes reward-reveal{
+0%{opacity:0;transform:perspective(700px) translateY(8px) rotateY(-48deg) scale(.12);animation-timing-function:cubic-bezier(.2,.65,.25,1)}
+22%{opacity:1;transform:perspective(700px) translateY(4px) rotateY(-18deg) scale(.46);animation-timing-function:cubic-bezier(.2,.7,.25,1)}
+68%{opacity:1;transform:perspective(700px) translateY(-2px) rotateY(2deg) scale(1.025);animation-timing-function:ease-out}
+100%{opacity:1;transform:none}}
+@keyframes flash{0%{opacity:0;transform:scale(.3)}24%{opacity:.75;transform:scale(.85)}100%{opacity:0;transform:scale(1.35)}}
 @keyframes glow-breathe{0%{opacity:0;transform:scale(1)}40%{opacity:.85;transform:scale(1.55)}100%{opacity:1;transform:scale(1.5)}}
-@keyframes ring-out{0%{opacity:0;transform:scale(.55)}25%{opacity:.3}100%{opacity:0;transform:scale(1.35)}}
+@keyframes ring-out{0%{opacity:0;transform:scale(.25)}20%{opacity:.3}100%{opacity:0;transform:scale(1.5)}}
 @keyframes spark-burst{0%{opacity:0;transform:translate(calc(var(--dx) * -1),calc(var(--dy) * -1)) scale(.3)}38%{opacity:.9;transform:scale(1.05)}100%{opacity:.45;transform:scale(.8)}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 @keyframes twinkle{0%,100%{opacity:.45;transform:scale(.8)}50%{opacity:.85;transform:scale(1)}}
@@ -71,7 +85,7 @@
 .reward-card{left:16px;right:16px;top:292px;min-height:0;padding:76px 16px 24px;border-radius:16px;background:linear-gradient(#fff7eb 6.25%,#fff 46.2%);box-shadow:none}.reward-card:before{display:none}.reward-card h2{color:var(--zam-ink);font-size:24px;line-height:28px;letter-spacing:-.72px;font-weight:600;margin:0}.benefit-countdown{display:flex;justify-content:center;gap:8px;font-size:12px;line-height:18px;letter-spacing:-.24px;color:var(--zam-muted)}.benefit-countdown b{font-size:14px;letter-spacing:-.42px;color:var(--zam-ink);font-weight:600;margin-right:4px}
 .coupon-ticket{position:relative;display:grid;grid-template-columns:35.37% 1fr;align-items:center;min-height:63px;background:url('assets/b9b55.svg') center/100% 100% no-repeat;margin-top:24px}.coupon-tag{position:absolute;right:0;top:0;background:var(--zam-red);color:#fff;font-size:10px;line-height:14px;letter-spacing:-.2px;border-radius:0 4px 0 4px;padding:3px 11.5px}.reward-value{color:var(--zam-red);font-size:36px;line-height:44px;letter-spacing:-1.08px;font-weight:600;white-space:nowrap}.coupon-divider{position:absolute;left:35.37%;top:8px;width:0;height:47px}.coupon-divider:after{content:'';position:absolute;top:0;left:0;width:47px;height:1px;background:url('assets/efa0a.svg') center/47px 1px no-repeat;transform-origin:0 0;transform:rotate(90deg)}.reward-sub{margin:0;padding:13.5px 16px;text-align:left;font-size:14px;line-height:18px;letter-spacing:-.28px;color:var(--zam-ink)}.large-amount .reward-value{font-size:24px;letter-spacing:-1px}
 .claim{position:relative;left:auto;top:auto;display:block;width:100%;margin-top:24px;border:0;border-radius:24px;background:linear-gradient(90deg,#e96c76,#ba1e29);color:#fff;font-size:16px;line-height:20px;font-weight:700;padding:12px 10px;box-shadow:none}.claim:hover{background:linear-gradient(90deg,#e34d59,#a11a24)}.is-playing .claim:disabled{background:linear-gradient(90deg,#e96c76,#ba1e29);color:#fff}
-.welcome-star{top:282px}.hero{top:205px}.aura{top:164px}.arrival-flash{top:215px}.ring{top:280px}.ring.two{top:256px}.s1{top:274px}.s2{top:295px}.s3{top:228px}.s4{top:237px}.s5{top:354px}.s6{top:352px}.is-used .scene,.is-used .veil{display:none}
+.welcome-star{width:200px;height:200px;left:calc(50% - 100px);top:270px}.hero{top:205px}.aura{top:164px}.arrival-flash{top:235px}.ring{top:280px}.ring.two{top:256px}.s1{top:274px}.s2{top:295px}.s3{top:228px}.s4{top:237px}.s5{top:354px}.s6{top:352px}.is-used .scene,.is-used .veil{display:none}
 @media(max-width:850px){.layout{grid-template-columns:1fr 391px;gap:24px}.shell{padding-inline:20px}}@media(max-width:700px){.layout{display:flex}.device{max-width:100%;height:828px}.intro h1{font-size:38px}.intro h1 br{display:block}.shell{padding-inline:16px}.loan-header h2{font-size:16px}.browser-toolbar{gap:12px}.address{margin-left:-5px;padding-inline:12px}.reward-card h2{font-size:22px}.reward-sub{padding:22px 10px 12px;font-size:13px;line-height:18px}.coupon-ticket{min-height:82px}.coupon-divider{top:16px}.reward-value{font-size:30px}.loan-breakdown{font-size:12px}.mobile-money{gap:5px}.loan-amount{padding-inline:0;gap:8px}.minus,.plus{width:32px}.minus:before,.plus:before{left:2px}.plus:after{left:14px}}
 @media(max-width:360px){.loan-header h2{font-size:14px}.large-amount .reward-value{font-size:22px}}
 </style>
@@ -82,7 +96,7 @@
 <main class="layout">
 <section class="intro" aria-labelledby="title"><div class="eyebrow">轻量动效 · 可交互演示</div><h1 id="title">Benefit<br><span>Countdown</span></h1><p class="desc">Pay on time and reduce your loan cost</p><div class="pills"><span class="pill">无第三方依赖</span><span class="pill">WebP + SVG 素材</span><span class="pill">离线可播放</span></div>
 <div class="controls"><label class="control-label" for="amount">演示优惠券金额</label><div class="input-row"><div class="amount-box"><span class="currency">K</span><input id="amount" type="number" min="1" max="9999" step="1" value="25" inputmode="numeric"></div><button class="replay" id="replay" type="button">↻ 重播动效</button></div><label class="toggle"><input type="checkbox" id="low-motion">低性能模式 · 直接展示奖励</label></div>
-<div class="spec"><div><strong>72.2 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
+<div class="spec"><div><strong>72.9 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
 <section class="preview" aria-label="手机内奖励效果预览"><div class="device" id="device"><div class="screen is-loading" id="screen">
 <div class="loan-page" id="loan-page" aria-hidden="true" lang="en">
 <div class="zam-statusbar"><img src="assets/bcb84.svg" alt="9:41"><img src="assets/d66f0.svg" alt=""></div>
@@ -99,17 +113,27 @@
 <div class="loan-nav"><div class="selected"><img src="assets/2c933.svg" alt=""><span>Loan</span></div><div><img src="assets/ff119.svg" alt=""><span>Order</span></div><div><img src="assets/fcff8.svg" alt=""><span>Help</span></div><div><img src="assets/a3f34.svg" alt=""><span>Me</span></div></div>
 </div>
 <div class="veil" aria-hidden="true"></div><section class="scene" aria-label="Benefit Countdown" lang="en"><div class="aura" aria-hidden="true"></div><div class="ring" aria-hidden="true"></div><div class="ring two" aria-hidden="true"></div>
-<div class="welcome-star" aria-hidden="true"><img src="star-v2.webp" width="360" height="360" alt="" decoding="async"><span class="star-sheen"></span></div><div class="arrival-flash" aria-hidden="true"></div><div class="hero" aria-hidden="true"><div class="hero-glow"></div><img class="hero-art" src="reward-v2.webp" width="480" height="320" alt="" decoding="async"><svg viewBox="0 0 200 166" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gold" x1=".2" y1="0" x2=".8" y2="1"><stop stop-color="#fffbd0"/><stop offset=".32" stop-color="#ffe58b"/><stop offset=".7" stop-color="#f4b83f"/><stop offset="1" stop-color="#df8e24"/></linearGradient><linearGradient id="edge" x2=".4" y2="1"><stop stop-color="#ffdf78"/><stop offset="1" stop-color="#c98022"/></linearGradient><radialGradient id="shine" cx=".28" cy=".2" r=".8"><stop stop-color="#fff" stop-opacity=".94"/><stop offset=".45" stop-color="#fff8cf" stop-opacity=".2"/><stop offset="1" stop-color="#ffcb53" stop-opacity="0"/></radialGradient><linearGradient id="coin" x2="0" y2="1"><stop stop-color="#ffdd72"/><stop offset=".5" stop-color="#ffc34d"/><stop offset="1" stop-color="#d79225"/></linearGradient><linearGradient id="ribbon" x2="1" y2="1"><stop stop-color="#e4b1e9"/><stop offset="1" stop-color="#aa74c7"/></linearGradient><path id="star" d="M88 24C92 14 101 14 106 25L119 51Q121 56 127 57L156 61C168 62 171 71 162 80L141 101Q137 105 138 111L143 140C145 153 137 157 127 152L101 138Q97 136 92 139L66 152C55 157 48 151 51 139L56 110Q57 105 52 100L31 80C22 72 25 63 38 61L67 57Q73 56 75 51Z"/></defs><ellipse cx="103" cy="148" rx="63" ry="9" fill="#80522b" opacity=".10"/><path d="M28 115q-20-15-9-32 9-12 20 0L28 99l22 8-6 17Z" fill="url(#ribbon)"/><path d="M149 54c31-22 45-5 22 14-12 10-28 10-23 1 5-8 24-9 30-2" fill="none" stroke="#e9bf70" stroke-width="4" stroke-linecap="round"/><use href="#star" fill="url(#edge)" transform="translate(0 5)"/><use href="#star" fill="url(#gold)" stroke="#ffe9a0" stroke-width="1.5"/><use href="#star" fill="url(#shine)"/><path d="M82 48l9-21q5-9 10 0" fill="none" stroke="#fffde2" stroke-width="5" stroke-linecap="round" opacity=".8"/><g class="coin"><path d="M122 136v10c0 11 57 11 57 0v-10" fill="url(#coin)"/><ellipse cx="150.5" cy="136" rx="28.5" ry="8" fill="#ffe793" stroke="#edb347"/><path d="M127 143v6m8-5v7m9-6v7m9-7v7m9-8v7m9-10v7" stroke="#b67920" opacity=".5"/><path d="M126 124v10c0 11 57 11 57 0v-10" fill="url(#coin)"/><ellipse cx="154.5" cy="124" rx="28.5" ry="8" fill="#fff0a7" stroke="#eeb745"/><ellipse cx="154.5" cy="124" rx="21" ry="4.8" fill="none" stroke="#e7b344"/><path d="M130 131v6m8-5v7m9-6v7m9-7v7m9-8v7m9-10v7" stroke="#b67920" opacity=".45"/><path d="M149 122l5-2 5 2-5 3Z" fill="#d9a23a"/></g></svg></div>
+<div class="welcome-star" aria-hidden="true"><img src="star-v2.webp" width="360" height="360" alt="" decoding="async"><span class="star-sheen"></span></div><div class="arrival-flash" aria-hidden="true"></div><div class="burst-layer" id="burst" aria-hidden="true"></div><div class="reward-reveal"><div class="hero" aria-hidden="true"><div class="hero-glow"></div><img class="hero-art" src="reward-v2.webp" width="480" height="320" alt="" decoding="async"><svg viewBox="0 0 200 166" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gold" x1=".2" y1="0" x2=".8" y2="1"><stop stop-color="#fffbd0"/><stop offset=".32" stop-color="#ffe58b"/><stop offset=".7" stop-color="#f4b83f"/><stop offset="1" stop-color="#df8e24"/></linearGradient><linearGradient id="edge" x2=".4" y2="1"><stop stop-color="#ffdf78"/><stop offset="1" stop-color="#c98022"/></linearGradient><radialGradient id="shine" cx=".28" cy=".2" r=".8"><stop stop-color="#fff" stop-opacity=".94"/><stop offset=".45" stop-color="#fff8cf" stop-opacity=".2"/><stop offset="1" stop-color="#ffcb53" stop-opacity="0"/></radialGradient><linearGradient id="coin" x2="0" y2="1"><stop stop-color="#ffdd72"/><stop offset=".5" stop-color="#ffc34d"/><stop offset="1" stop-color="#d79225"/></linearGradient><linearGradient id="ribbon" x2="1" y2="1"><stop stop-color="#e4b1e9"/><stop offset="1" stop-color="#aa74c7"/></linearGradient><path id="star" d="M88 24C92 14 101 14 106 25L119 51Q121 56 127 57L156 61C168 62 171 71 162 80L141 101Q137 105 138 111L143 140C145 153 137 157 127 152L101 138Q97 136 92 139L66 152C55 157 48 151 51 139L56 110Q57 105 52 100L31 80C22 72 25 63 38 61L67 57Q73 56 75 51Z"/></defs><ellipse cx="103" cy="148" rx="63" ry="9" fill="#80522b" opacity=".10"/><path d="M28 115q-20-15-9-32 9-12 20 0L28 99l22 8-6 17Z" fill="url(#ribbon)"/><path d="M149 54c31-22 45-5 22 14-12 10-28 10-23 1 5-8 24-9 30-2" fill="none" stroke="#e9bf70" stroke-width="4" stroke-linecap="round"/><use href="#star" fill="url(#edge)" transform="translate(0 5)"/><use href="#star" fill="url(#gold)" stroke="#ffe9a0" stroke-width="1.5"/><use href="#star" fill="url(#shine)"/><path d="M82 48l9-21q5-9 10 0" fill="none" stroke="#fffde2" stroke-width="5" stroke-linecap="round" opacity=".8"/><g class="coin"><path d="M122 136v10c0 11 57 11 57 0v-10" fill="url(#coin)"/><ellipse cx="150.5" cy="136" rx="28.5" ry="8" fill="#ffe793" stroke="#edb347"/><path d="M127 143v6m8-5v7m9-6v7m9-7v7m9-8v7m9-10v7" stroke="#b67920" opacity=".5"/><path d="M126 124v10c0 11 57 11 57 0v-10" fill="url(#coin)"/><ellipse cx="154.5" cy="124" rx="28.5" ry="8" fill="#fff0a7" stroke="#eeb745"/><ellipse cx="154.5" cy="124" rx="21" ry="4.8" fill="none" stroke="#e7b344"/><path d="M130 131v6m8-5v7m9-6v7m9-7v7m9-8v7m9-10v7" stroke="#b67920" opacity=".45"/><path d="M149 122l5-2 5 2-5 3Z" fill="#d9a23a"/></g></svg></div>
 <span class="spark s1" aria-hidden="true">✦</span><span class="spark s2" aria-hidden="true">✦</span><span class="spark s3" aria-hidden="true">✧</span><span class="spark s4" aria-hidden="true">✦</span><span class="spark s5" aria-hidden="true">✦</span><span class="spark s6" aria-hidden="true">✧</span>
 <div class="reward-card"><h2>Benefit Countdown</h2><div class="benefit-countdown"><span><b>02</b> day</span><span><b>14</b> hrs</span></div>
 <div class="coupon-ticket"><span class="coupon-tag">Discount</span><div class="reward-value"><span>K</span><span id="reward-amount">25</span></div><span class="coupon-divider" aria-hidden="true"></span><p class="reward-sub" id="reward-sub">Pay on time <br>and reduce your loan cost</p></div>
-<button class="claim" type="button" id="claim">Use Now</button></div></section></div></div><div class="preview-caption"><span><i class="live-dot"></i>LIVE PREVIEW</span><span>WebP + CSS + JavaScript</span></div><p class="sr-only" role="status" id="announcement"></p></section>
+<button class="claim" type="button" id="claim">Use Now</button></div></div></section></div></div><div class="preview-caption"><span><i class="live-dot"></i>LIVE PREVIEW</span><span>WebP + CSS + JavaScript</span></div><p class="sr-only" role="status" id="announcement"></p></section>
 </main><footer class="footer"><span>REWARD MOTION / V2 质感与节奏优化</span><span>演示界面 · 不连接真实奖励或支付</span></footer>
 </div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),screen=$('screen'),amount=$('amount'),claim=$('claim'),low=$('low-motion'),media=matchMedia('(prefers-reduced-motion: reduce)');
 let run=0,failed=false,settled=false;
+// Reuse the existing star bitmap; build once, then replay with CSS only.
+const burst=document.createDocumentFragment();
+for(let i=0;i<36;i++){
+const ray=document.createElement('span'),flight=document.createElement('span'),star=document.createElement('i');
+ray.className='burst-ray';flight.className='burst-flight';star.className='burst-star';
+const glint=i%4===3;
+ray.style.cssText=`--angle:${(i*137.508)%360}deg;--reach:${112+(i*47)%126}px;--size:${glint?5+i%5:13+(i*7)%17}px;--trail:${glint?24:42+(i*11)%48}px;--delay:${.4+(i%6)*.016}s;--life:${.92+(i%5)*.09}s;--spin:${i%2?160:-120}deg`;
+flight.append(star);ray.append(flight);burst.append(ray);
+}
+$('burst').append(burst);
 const images=[...screen.querySelectorAll('.welcome-star img,.hero-art')];
 const assets=Promise.all(images.map(img=>img.decode().catch(()=>{failed=true;screen.classList.add('asset-error')}))).then(()=>{settled=true;if(!failed)screen.classList.remove('asset-pending')});
 async function play(){
