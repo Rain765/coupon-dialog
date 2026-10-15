@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'reward-motion-v2'
 OUTPUT = ROOT / 'output' / 'zamcash-reward-final.zip'
 PREFIX = 'zamcash-reward-final/'
-VERSION = 'final-2026-10-16-soft-reward'
+VERSION = 'final-2026-10-16-natural-burst'
 
 
 def sha(data):
@@ -51,7 +51,7 @@ def main():
         'runtime_transfer_bytes': total, 'runtime_budget_bytes': 80000,
         'budget_headroom_bytes': 80000 - total,
         'measurement': 'HTML/SVG gzip level 6; PNG/WebP identity; excludes HTTP headers, docs and ZIP overhead',
-        'motion': {'axis': 'Y', 'turns': 1, 'degrees': 360, 'burst_particles': 18,
+        'motion': {'axis': 'Y', 'turns': 1, 'degrees': 360, 'burst_particles': 12,
                    'rotation_ms': {'delay': 600, 'duration': 1200},
                    'growth_ms': {'delay': 600, 'duration': 1400}, 'interactive_at_ms': 2200},
         'runtime_files': sizes,

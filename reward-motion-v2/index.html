@@ -22,16 +22,17 @@
 .reward-reveal{position:absolute;inset:0;transform-origin:50% 370px;perspective:700px;perspective-origin:50% 370px}
 .reward-turn{position:absolute;inset:0;transform-origin:50% 370px}
 .burst-layer{position:absolute;inset:0;z-index:4;pointer-events:none}
-.burst-ray{position:absolute;left:50%;top:370px;width:0;height:0;transform:rotate(var(--angle))}
+.burst-ray{position:absolute;left:50%;top:370px;width:0;height:0}
 .burst-flight{position:absolute;left:0;top:0;width:var(--size);height:var(--size);margin:calc(var(--size) / -2);opacity:0}
-.burst-star{position:absolute;inset:0;background:url('star-v2.webp') center/contain no-repeat}
-.burst-flight:after{content:'';position:absolute;right:50%;top:calc(50% - .75px);width:var(--trail);height:1.5px;border-radius:50%;background:linear-gradient(90deg,transparent,#ffe4a055 48%,#fff7d9d9);transform-origin:100% 50%;opacity:0}
+.burst-star{position:absolute;inset:0;background:url('star-v2.webp') center/contain no-repeat;filter:blur(var(--soft))}
+.burst-flight:after{content:'';position:absolute;right:50%;top:calc(50% - .75px);width:var(--trail);height:1.5px;border-radius:50%;background:linear-gradient(90deg,transparent,#ffe4a055 48%,#fff7d9d9);transform-origin:100% 50%;opacity:0;filter:blur(.45px)}
 .burst-ray:nth-child(3n) .burst-flight:after{height:1px}
 .burst-ray:nth-child(4n) .burst-star{background:linear-gradient(135deg,#fffdf0,#ffe4a0 50%,#e9b45c);clip-path:polygon(50% 0,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0 50%,39% 38%)}
 .is-playing .veil{animation:veil-in .24s both}
 .is-playing .welcome-star{animation:star-arrive .64s both}
 .is-playing .star-sheen:after{animation:satin-sweep .38s .12s both cubic-bezier(.3,0,.2,1)}
-.is-playing .burst-flight{animation:star-flight var(--life) var(--delay) both cubic-bezier(.12,.64,.22,1)}
+.is-playing .burst-ray{animation:burst-drop var(--life) var(--delay) both cubic-bezier(.55,0,1,.45)}
+.is-playing .burst-flight{animation:star-flight var(--life) var(--delay) both cubic-bezier(.16,.62,.32,1)}
 .is-playing .burst-star{animation:star-spin var(--life) var(--delay) both ease-out}
 .is-playing .burst-flight:after{animation:light-trail var(--life) var(--delay) both linear}
 .is-playing .reward-reveal{animation:reward-reveal 1.4s .6s both cubic-bezier(.35,0,.5,1)}
@@ -55,9 +56,11 @@
 80%{opacity:.9;transform:scale(1.18) rotate(2deg)}
 100%{opacity:0;transform:scale(.4) rotate(8deg)}}
 @keyframes satin-sweep{0%{opacity:0;transform:translateX(-45%)}20%{opacity:.42}75%{opacity:.3}100%{opacity:0;transform:translateX(45%)}}
-@keyframes star-flight{0%{opacity:0;transform:translateX(18px)}8%{opacity:1}58%{opacity:.95}100%{opacity:0;transform:translateX(var(--reach))}}
-@keyframes star-spin{0%{transform:rotate(calc(0deg - var(--angle))) scale(.45)}20%{transform:rotate(calc(35deg - var(--angle))) scale(1)}100%{transform:rotate(calc(var(--spin) - var(--angle))) scale(.55)}}
-@keyframes light-trail{0%{opacity:0;transform:scaleX(.15)}12%{opacity:.85;transform:scaleX(1)}38%{opacity:.6;transform:scaleX(.85)}78%,100%{opacity:0;transform:scaleX(.08)}}
+/* Separate outward drag and downward acceleration produce curved trajectories. */
+@keyframes burst-drop{from{transform:translateY(0)}to{transform:translateY(var(--fall))}}
+@keyframes star-flight{0%{opacity:0;transform:translate(var(--sx),var(--sy))}10%{opacity:var(--alpha)}48%{opacity:var(--alpha)}100%{opacity:0;transform:translate(var(--x),var(--y))}}
+@keyframes star-spin{0%{transform:rotate(var(--tilt)) scale(.35)}18%{transform:rotate(var(--tilt)) scale(1)}100%{transform:rotate(var(--spin)) scale(var(--end-scale))}}
+@keyframes light-trail{0%{opacity:0;transform:rotate(var(--angle)) scaleX(.15)}12%{opacity:.65;transform:rotate(var(--angle)) scaleX(1)}35%{opacity:.3;transform:rotate(var(--angle)) scaleX(.6)}65%,100%{opacity:0;transform:rotate(var(--angle)) scaleX(.05)}}
 /* Independent easing for rotation and growth. */
 @keyframes reward-reveal{
 0%{opacity:0;transform:translateY(8px) scale(.08)}
@@ -105,7 +108,7 @@
 <main class="layout">
 <section class="intro" aria-label="演示控制"><div class="pills"><span class="pill">WebP + CSS + JavaScript</span></div>
 <div class="controls"><label class="control-label" for="amount">演示优惠券金额</label><div class="input-row"><div class="amount-box"><span class="currency">K</span><input id="amount" type="number" min="1" max="9999" step="1" value="25" inputmode="numeric"></div><button class="replay" id="replay" type="button">↻ 重播动效</button></div><label class="toggle"><input type="checkbox" id="low-motion">低性能模式 · 直接展示奖励</label></div>
-<div class="spec"><div><strong>76.9 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
+<div class="spec"><div><strong>77.3 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
 <section class="preview" aria-label="手机内奖励效果预览"><div class="device" id="device"><div class="screen is-loading is-used" id="screen">
 <div class="loan-page" id="loan-page" aria-hidden="true" lang="en">
 <div class="zam-statusbar"><img src="assets/bcb84.svg" alt="9:41"><img src="assets/d66f0.svg" alt=""></div>
@@ -137,14 +140,21 @@ const listeners=[],configured=Object.prototype.hasOwnProperty.call(window,'REWAR
 const listen=(target,type,handler)=>{target.addEventListener(type,handler);listeners.push(()=>target.removeEventListener(type,handler))};
 // Reuse the existing star bitmap; build once, then replay with CSS only.
 const burst=document.createDocumentFragment();
-for(let i=0;i<18;i++){
+const particles=[];
+for(let i=0;i<12;i++){
 const ray=document.createElement('span'),flight=document.createElement('span'),star=document.createElement('i');
 ray.className='burst-ray';flight.className='burst-flight';star.className='burst-star';
-const glint=i%4===3;
-ray.style.cssText=`--angle:${(i*137.508)%360}deg;--reach:${112+(i*47)%126}px;--size:${glint?5+i%5:13+(i*7)%17}px;--trail:${glint?24:42+(i*11)%48}px;--delay:${.4+(i%6)*.016}s;--life:${.92+(i%5)*.09}s;--spin:${i%2?160:-120}deg`;
-flight.append(star);ray.append(flight);burst.append(ray);
+flight.append(star);ray.append(flight);burst.append(ray);particles.push(ray);
 }
 $('burst').append(burst);
+function scatter(){
+const random=(min,max)=>min+Math.random()*(max-min),sizes=[8,18,11,5,25,9,15,6,12,21,7,4];
+particles.forEach((ray,i)=>{
+const glint=i%4===3,angle=i*30-105+random(-10,10),radians=angle*Math.PI/180;
+const size=sizes[i]*random(.9,1.1),reach=random(90,175),life=random(.72,1.12);
+ray.style.cssText=`--angle:${angle.toFixed(2)}deg;--sx:${random(-5,5).toFixed(1)}px;--sy:${random(-5,5).toFixed(1)}px;--x:${(Math.cos(radians)*reach).toFixed(1)}px;--y:${(Math.sin(radians)*reach*.9).toFixed(1)}px;--fall:${random(32,85).toFixed(1)}px;--size:${size.toFixed(1)}px;--trail:${(glint?random(14,24):random(20,48)).toFixed(1)}px;--delay:${random(.4,.48).toFixed(3)}s;--life:${life.toFixed(3)}s;--tilt:${random(-80,80).toFixed(1)}deg;--spin:${((i%2?1:-1)*random(90,260)).toFixed(1)}deg;--end-scale:${random(.35,.7).toFixed(2)};--alpha:${random(.55,.9).toFixed(2)};--soft:${(size<12?random(.55,.85):random(.3,.5)).toFixed(2)}px`;
+});
+}
 const images=[...screen.querySelectorAll('.welcome-star img,.hero-art')];
 const assets=Promise.all(images.map(img=>img.decode().catch(()=>{failed=true;screen.classList.add('asset-error')}))).then(()=>{settled=true;if(!failed)screen.classList.remove('asset-pending')});
 const now=()=>clock+performance.now()-anchor;
@@ -179,7 +189,7 @@ if(!tick())return false;timer=setInterval(tick,1000);
 await Promise.race([assets,new Promise(resolve=>setTimeout(resolve,1200))]);if(thisRun!==run||!tick())return false;
 screen.classList.toggle('asset-pending',!settled);screen.classList.remove('is-loading');void screen.offsetWidth;
 if(screen.classList.contains('low-motion')||media.matches||failed||!settled){ready();return true}
-screen.classList.add('is-playing');claim.disabled=true;return true;
+scatter();screen.classList.add('is-playing');claim.disabled=true;return true;
 }
 function show(data,settings={}){
 if(destroyed)return Promise.resolve(false);

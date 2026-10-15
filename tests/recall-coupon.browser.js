@@ -84,6 +84,27 @@ async (page) => {
     return total;
   });
   check(Math.abs(Math.abs(degrees)-360)<0.01,'exactly one Y-axis turn');
+  const burst = await page.evaluate(async()=>{
+    const rays=[...document.querySelectorAll('.burst-ray')],first=rays[0];
+    const before=rays.map(e=>e.style.cssText).join();
+    await window.RewardCoupon.replay();
+    const varied=before!==rays.map(e=>e.style.cssText).join();
+    const sizes=rays.map(e=>parseFloat(e.style.getPropertyValue('--size')));
+    const maxEnd=Math.max(...rays.map(e=>1000*(parseFloat(e.style.getPropertyValue('--delay'))+parseFloat(e.style.getPropertyValue('--life')))));
+    const flight=first.querySelector('.burst-flight'), animations=[first.getAnimations()[0],flight.getAnimations()[0]];
+    const points=[.2,.5,.8].map(progress=>{
+      animations.forEach(a=>{a.pause();const t=a.effect.getTiming();a.currentTime=t.delay+t.duration*progress});
+      const f=new DOMMatrix(getComputedStyle(flight).transform),d=new DOMMatrix(getComputedStyle(first).transform);
+      return {x:f.m41,y:f.m42+d.m42};
+    });
+    const [a,b,c]=points,cross=Math.abs((b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x));
+    const soft=rays.every(e=>parseFloat(getComputedStyle(e.querySelector('.burst-star')).filter.slice(5))>0);
+    await window.RewardCoupon.replay();
+    return {count:rays.length,varied,reused:document.querySelector('.burst-ray')===first,sizes,maxEnd,cross,soft};
+  });
+  check(burst.count===12&&burst.reused,'12 burst nodes reused on replay');
+  check(burst.varied&&Math.max(...burst.sizes)/Math.min(...burst.sizes)>4,'varied burst sizes and fresh paths');
+  check(burst.soft&&burst.cross>1&&burst.maxEnd<=1600,'soft curved burst finishes before card settles');
   for (const width of [320,390,1200]) {
     await page.setViewportSize({width,height:1000});
     await page.evaluate(()=>window.RewardCoupon.show({id:'layout',amount:9999,eligible:true,status:'available',serverNow:Date.now(),expiresAt:Date.now()+60000},{lowPerformance:true,onApply:()=>{}}));
