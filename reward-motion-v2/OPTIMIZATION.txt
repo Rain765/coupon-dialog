@@ -63,3 +63,5 @@ HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 76.9 KB，精确体积与剩
 - 卡片背景改为 #fbdde1 → #fff0f2 → #fff；保留白色倒计时底块。
 - reward-v2.webp 使用内置图像编辑工具生成的红色飘带版本，480×320，WebP quality 85，透明背景。SVG 降级飘带同步改红。
 - 开场星星、业务逻辑和一圈动画不变；编辑提示词见 handoff/ASSET-CHANGES.md。
+
+2026-10-16 视觉微调：优惠券说明 padding 20px 10px 14px，上移 4px；奖励图使用静态 blur(.55px) 柔化边缘，保留原红色飘带素材及一圈动效。
