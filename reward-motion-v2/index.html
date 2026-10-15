@@ -148,7 +148,7 @@ flight.append(star);ray.append(flight);burst.append(ray);particles.push(ray);
 }
 $('burst').append(burst);
 function scatter(){
-const random=(min,max)=>min+Math.random()*(max-min),sizes=[8,18,11,5,25,9,15,6,12,21,7,4];
+const random=(min,max)=>min+Math.random()*(max-min),sizes=[8,24,11,5,32,9,15,6,12,28,7,4];
 particles.forEach((ray,i)=>{
 const glint=i%4===3,angle=i*30-105+random(-10,10),radians=angle*Math.PI/180;
 const size=sizes[i]*random(.9,1.1),reach=random(90,175),life=random(.72,1.12);
