@@ -1,7 +1,7 @@
 # ZamCash 奖励动效 · 前端交付
 
 最终规格：**卡片绕竖直中轴（Y 轴）左右翻转 1 圈，累计 360°。**
-版本：`final-2026-10-15-recall-minimal-one-turn`。以包内源码及本说明为准。
+版本：`final-2026-10-15-zepto-sui-handoff`。本次补充 Zepto + SUI Mobile 接入文档，运行源码、文案和动效不变。
 
 ## 快速查看
 
@@ -23,6 +23,7 @@ python3 -m http.server 8765
 | `demo/reward-v2.webp` | 卡片顶部星星、金币、丝带素材 |
 | `demo/assets/` | 15 个 SVG、1 个 PNG，来自项目设计稿 |
 | `docs/FRONTEND-INTEGRATION.md` | 接入、精确时间线、缓动参数、状态与降级方式 |
+| `docs/ZEPTO-SUI-INTEGRATION.md` | 现有框架适配清单、后端字段契约、Zepto 请求示例及联调边界 |
 | `asset-manifest.json` | 文件 SHA-256、原始大小、gzip 估算、源码提交号 |
 | `SHA256SUMS.txt` | 包内文件校验表，可执行 `shasum -a 256 -c SHA256SUMS.txt` |
 | `references/` | 原始 README、素材提示词和 Figma 来源；原始 README 的旧文案/体积不是当前规格 |
@@ -37,6 +38,7 @@ python3 -m http.server 8765
 
 ## 交付边界
 
-这是可运行的原生 HTML/CSS/JavaScript 参考实现，尚未封装为 React/Vue SDK，也未连接真实优惠券接口。
+这是可运行的原生 HTML/CSS/JavaScript 参考实现，尚未连接真实优惠券接口。现有项目使用 Zepto + SUI Mobile，接入方需完成组件 DOM 解耦、样式隔离、请求适配和生命周期处理；请先阅读 `docs/ZEPTO-SUI-INTEGRATION.md`。
 宿主项目接入时先设置 `window.REWARD_COUPON_CONFIG = null` 关闭模拟券，再调用 `RewardCoupon.show(coupon, options)`；配置 `onApply` 接申请流程。资格、金额与到期时间由后端决定，过期自动关闭。详见接入说明。
+后端提供 `id`、`amount`、`eligible`、`status`、`expiresAt`、`serverNow`；前端提供 `lowPerformance` 和返回 Promise 的 `onApply`。字段为待对接契约，不代表测试站已有对应接口。
 已做浏览器验证；目标市场低端手机真机表现仍需前端在目标设备上验收。

@@ -1,7 +1,9 @@
 # 前端接入说明 · 一圈最终版
 
-版本：`final-2026-10-15-recall-minimal-one-turn`，2026-10-15。
+版本：`final-2026-10-15-zepto-sui-handoff`，2026-10-15。本次仅更新交付说明，运行源码保持已确认的一圈最终版。
 运行源码为 `demo/index.html`。所有时间单位为毫秒，角度单位为度。
+
+现有项目请先看 [Zepto + SUI Mobile 接入清单](ZEPTO-SUI-INTEGRATION.md)：已确认框架、前端适配项、后端字段契约、请求包装示例和待联调范围分别列明。当前完整演示仍需拆分适配，不是直接引入即可替换业务页面的 SDK。
 
 ## 1. 最终视觉和资源约束
 
@@ -169,6 +171,8 @@ const shown = await window.RewardCoupon.show({
 
 也可预先传入 `window.REWARD_COUPON_CONFIG = {coupon, lowPerformance, onApply}` 直接初始化。示例 `host` / `devicePolicy` / `couponResponse` 是宿主适配接口，不是本包内实现。
 
+以下 6 个字段来自后端，经宿主映射后传入第一个参数：
+
 | 字段 | 类型 / 约束 | 含义 |
 | --- | --- | --- |
 | `id` | 非空字符串 | 后端真实券 ID，申请流程用它重新校验和绑定 |
@@ -177,6 +181,11 @@ const shown = await window.RewardCoupon.show({
 | `status` | 严格为 `available` 才展示 | 其他状态包括已绑定、已使用、已撤销等，均不展示 |
 | `expiresAt` | UTC Unix 毫秒整数 | 申请使用优惠券的真实截止时刻，由后端按赞比亚业务时区计算 6 个自然日 |
 | `serverNow` | UTC Unix 毫秒整数 | 本次响应的服务端当前时间；每次刷新数据都要更新，不能重用陈旧时间 |
+
+以下是前端提供的第二个参数，不属于后端券字段：
+
+| 配置 | 类型 / 约束 | 含义 |
+| --- | --- | --- |
 | `lowPerformance` | boolean，位于第二个参数 | 宿主低性能策略；与演示开关、系统减少动态合并判断 |
 | `onApply` | 返回 Promise 或同步返回的函数，位于第二个参数 | 点击 Apply now 后交给宿主；未提供时按钮保持禁用 |
 
@@ -214,7 +223,7 @@ const shown = await window.RewardCoupon.show({
 
 宿主设置低性能时，要同时执行静态业务分支并启用按钮；不要仅通过外部 CSS 把动画关掉，却让 JS 一直等待 `animationend`。
 降级 CSS 保留在完整源码内，关闭 `.scene` 子节点及 `:after` 的 animation，并隐藏开场星星/光环。粒子默认 opacity 为 0，无动画时不会露出。
-现有浏览器接口包括 `img.decode()`、`matchMedia().addEventListener()` 和 CSS 3D transform；旧 WebView 兼容性需按目标版本验证。若宿主目标不支持这些接口，应在初始化前选择静态模式或提供对应兼容处理，不能假设源码会自动捕获缺失方法。
+现有浏览器接口包括 `img.decode()`、`matchMedia().addEventListener()` 和 CSS 3D transform；脚本还使用 async/await、Promise 等语法和能力。旧 WebView 需按目标版本转译、补齐能力或在加载脚本前选择独立兼容静态实现；仅设置 `lowPerformance` 不能解决语法解析失败或缺失方法。详见框架接入清单第 5 节。
 
 ## 7. 发布与验收
 
