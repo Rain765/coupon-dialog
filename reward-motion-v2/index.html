@@ -35,7 +35,7 @@
 .is-playing .burst-star{animation:star-spin var(--life) var(--delay) both ease-out}
 .is-playing .burst-flight:after{animation:light-trail var(--life) var(--delay) both linear}
 .is-playing .reward-reveal{animation:reward-reveal 1.4s .6s both cubic-bezier(.35,0,.5,1)}
-.is-playing .reward-turn{animation:reward-turn 1.4s .6s both cubic-bezier(.25,.38,.4,1)}
+.is-playing .reward-turn{animation:reward-turn 1.2s .6s both}
 .is-playing .arrival-flash{animation:flash .46s .38s both}
 .is-playing .hero-glow{animation:glow-breathe .8s .64s both}
 .is-playing .ring{animation:ring-out .72s .4s both}
@@ -63,7 +63,11 @@
 0%{opacity:0;transform:translateY(8px) scale(.08)}
 12%{opacity:1}
 100%{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes reward-turn{from{transform:rotateY(-1080deg)}to{transform:rotateY(0deg)}}
+/* Split the prior curve at two turns; preserve its timing and join velocity. */
+@keyframes reward-turn{
+0%{transform:rotateY(-1080deg);animation-timing-function:cubic-bezier(.336590,.296449,.603158,.690273)}
+45.067141%{transform:rotateY(-360deg);animation-timing-function:cubic-bezier(.230493,.438551,.530806,1)}
+100%{transform:rotateY(0deg)}}
 @keyframes flash{0%{opacity:0;transform:scale(.3)}24%{opacity:.75;transform:scale(.85)}100%{opacity:0;transform:scale(1.35)}}
 @keyframes glow-breathe{0%{opacity:0;transform:scale(1)}40%{opacity:.85;transform:scale(1.55)}100%{opacity:1;transform:scale(1.5)}}
 @keyframes ring-out{0%{opacity:0;transform:scale(.25)}20%{opacity:.3}100%{opacity:0;transform:scale(1.5)}}
@@ -99,7 +103,7 @@
 <main class="layout">
 <section class="intro" aria-labelledby="title"><div class="eyebrow">轻量动效 · 可交互演示</div><h1 id="title">Benefit<br><span>Countdown</span></h1><p class="desc">Pay on time and reduce your loan cost</p><div class="pills"><span class="pill">无第三方依赖</span><span class="pill">WebP + SVG 素材</span><span class="pill">离线可播放</span></div>
 <div class="controls"><label class="control-label" for="amount">演示优惠券金额</label><div class="input-row"><div class="amount-box"><span class="currency">K</span><input id="amount" type="number" min="1" max="9999" step="1" value="25" inputmode="numeric"></div><button class="replay" id="replay" type="button">↻ 重播动效</button></div><label class="toggle"><input type="checkbox" id="low-motion">低性能模式 · 直接展示奖励</label></div>
-<div class="spec"><div><strong>72.9 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
+<div class="spec"><div><strong>73.0 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
 <section class="preview" aria-label="手机内奖励效果预览"><div class="device" id="device"><div class="screen is-loading" id="screen">
 <div class="loan-page" id="loan-page" aria-hidden="true" lang="en">
 <div class="zam-statusbar"><img src="assets/bcb84.svg" alt="9:41"><img src="assets/d66f0.svg" alt=""></div>
