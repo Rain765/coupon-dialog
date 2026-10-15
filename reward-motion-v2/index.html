@@ -57,10 +57,13 @@
 @keyframes star-spin{0%{transform:rotate(calc(0deg - var(--angle))) scale(.45)}20%{transform:rotate(calc(35deg - var(--angle))) scale(1)}100%{transform:rotate(calc(var(--spin) - var(--angle))) scale(.55)}}
 @keyframes light-trail{0%{opacity:0;transform:scaleX(.15)}12%{opacity:.85;transform:scaleX(1)}38%{opacity:.6;transform:scaleX(.85)}78%,100%{opacity:0;transform:scaleX(.08)}}
 @keyframes reward-reveal{
-0%{opacity:0;transform:perspective(700px) translateY(8px) rotateY(-48deg) scale(.12);animation-timing-function:cubic-bezier(.2,.65,.25,1)}
-22%{opacity:1;transform:perspective(700px) translateY(4px) rotateY(-18deg) scale(.46);animation-timing-function:cubic-bezier(.2,.7,.25,1)}
-68%{opacity:1;transform:perspective(700px) translateY(-2px) rotateY(2deg) scale(1.025);animation-timing-function:ease-out}
-100%{opacity:1;transform:none}}
+0%{opacity:0;transform:perspective(700px) translateY(8px) rotateY(-1080deg) scale(.08);animation-timing-function:linear}
+8%{opacity:1}
+18%{transform:perspective(700px) translateY(6px) rotateY(-720deg) scale(.12);animation-timing-function:linear}
+36%{transform:perspective(700px) translateY(3px) rotateY(-360deg) scale(.22);animation-timing-function:cubic-bezier(.12,.6,.25,1)}
+66%{opacity:1;transform:perspective(700px) translateY(0) rotateY(0deg) scale(.48);animation-timing-function:cubic-bezier(.2,.7,.25,1)}
+88%{transform:perspective(700px) translateY(-2px) rotateY(0deg) scale(1.025);animation-timing-function:ease-out}
+100%{opacity:1;transform:perspective(700px) translateY(0) rotateY(0deg) scale(1)}}
 @keyframes flash{0%{opacity:0;transform:scale(.3)}24%{opacity:.75;transform:scale(.85)}100%{opacity:0;transform:scale(1.35)}}
 @keyframes glow-breathe{0%{opacity:0;transform:scale(1)}40%{opacity:.85;transform:scale(1.55)}100%{opacity:1;transform:scale(1.5)}}
 @keyframes ring-out{0%{opacity:0;transform:scale(.25)}20%{opacity:.3}100%{opacity:0;transform:scale(1.5)}}
@@ -126,7 +129,7 @@ const $=id=>document.getElementById(id),screen=$('screen'),amount=$('amount'),cl
 let run=0,failed=false,settled=false;
 // Reuse the existing star bitmap; build once, then replay with CSS only.
 const burst=document.createDocumentFragment();
-for(let i=0;i<36;i++){
+for(let i=0;i<18;i++){
 const ray=document.createElement('span'),flight=document.createElement('span'),star=document.createElement('i');
 ray.className='burst-ray';flight.className='burst-flight';star.className='burst-star';
 const glint=i%4===3;
