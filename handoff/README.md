@@ -1,7 +1,7 @@
 # ZamCash 奖励动效 · 前端交付
 
 最终规格：**卡片绕竖直中轴（Y 轴）左右翻转 1 圈，累计 360°。**
-版本：`final-2026-10-15-zepto-sui-handoff`。本次补充 Zepto + SUI Mobile 接入文档，运行源码、文案和动效不变。
+版本：`final-2026-10-16-mobile-coupon-lines`。倒计时移回标题下方，恢复券角标，修复移动端券线框和虚线；一圈动效不变。
 
 ## 快速查看
 
@@ -32,8 +32,8 @@ python3 -m http.server 8765
 
 - 18 个爆散粒子：14 颗金星 + 4 个微光点，保留金色拖尾。
 - 卡片 1 圈翻转：0.6–1.8 秒；连续放大：0.6–2.0 秒；2.2 秒后按钮可用。
-- 右侧文案恢复为 Pay on time / and reduce your loan cost；券高缩小，申请倒计时移到右上角，仅显示天/小时；金额动态绑定，保留配色和素材。模拟默认 K25，真实接入读取后端字段。
-- 运行资源约 **74.0 KB**，准确字节数见清单。口径为 HTML/SVG gzip level 6 + PNG/WebP 原始字节，不含 HTTP 头、文档和 ZIP 容器开销。
+- 右侧文案恢复为 Pay on time / and reduce your loan cost；券高保持紧凑，申请倒计时位于标题下方，黑字、数字加粗，仅显示天/小时；券角标为 Repayment discount；金额动态绑定，保留配色和素材。模拟默认 K25，真实接入读取后端字段。
+- 运行资源约 **74.6 KB**，准确字节数见清单。口径为 HTML/SVG gzip level 6 + PNG/WebP 原始字节，不含 HTTP 头、文档和 ZIP 容器开销。
 - 线上要为 HTML/SVG 启用 gzip。上述 Python 预览服务器不会自动启用 gzip。
 
 ## 交付边界

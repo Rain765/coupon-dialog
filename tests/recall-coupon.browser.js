@@ -14,7 +14,7 @@ async (page) => {
     time: document.querySelector('#coupon-countdown').textContent,
     enabled: !document.querySelector('#claim').disabled,
   }));
-  check(initial.title === 'Welcome back!' && /^\d{2} days \d{2} hrs$/.test(initial.label) && initial.button === 'Apply now' && initial.copy === 'Pay on time\nand reduce your loan cost', 'approved copy');
+  check(initial.title === 'Welcome back!' && initial.label === 'Repayment discount' && /^\d{2} days \d{2} hrs$/.test(initial.time) && initial.button === 'Apply now' && initial.copy === 'Pay on time\nand reduce your loan cost', 'approved copy');
   check(initial.enabled, 'animation unlock');
   await page.reload(); await page.waitForTimeout(2400);
   check(await page.locator('#coupon-countdown').getAttribute('datetime') === initial.deadline, 'reload preserves deadline');
@@ -80,7 +80,7 @@ async (page) => {
   for (const width of [320,390,1200]) {
     await page.setViewportSize({width,height:1000});
     await page.evaluate(()=>window.RewardCoupon.show({id:'layout',amount:9999,eligible:true,status:'available',serverNow:Date.now(),expiresAt:Date.now()+60000},{lowPerformance:true,onApply:()=>{}}));
-    const fits = await page.evaluate(()=>{const s=document.querySelector('.screen').getBoundingClientRect(),c=document.querySelector('.reward-card').getBoundingClientRect(),p=document.querySelector('#reward-sub'),tag=document.querySelector('.coupon-tag').getBoundingClientRect();const range=document.createRange();range.selectNodeContents(p);const text=range.getBoundingClientRect();return document.documentElement.scrollWidth<=innerWidth&&c.bottom<=s.bottom&&p.scrollWidth<=p.clientWidth&&text.top>=tag.bottom&&document.querySelector('.reward-card h2').nextElementSibling.classList.contains('coupon-ticket')&&getComputedStyle(document.querySelector('#coupon-hours')).fontWeight==='700'&&getComputedStyle(document.querySelector('#coupon-hours')).color==='rgb(255, 255, 255)'&&document.querySelector('.coupon-ticket').getBoundingClientRect().height<112;});
+    const fits = await page.evaluate(()=>{const s=document.querySelector('.screen').getBoundingClientRect(),c=document.querySelector('.reward-card').getBoundingClientRect(),p=document.querySelector('#reward-sub'),tag=document.querySelector('.coupon-tag').getBoundingClientRect();const range=document.createRange();range.selectNodeContents(p);const text=range.getBoundingClientRect();return document.documentElement.scrollWidth<=innerWidth&&c.bottom<=s.bottom&&p.scrollWidth<=p.clientWidth&&text.top>=tag.bottom&&document.querySelector('.reward-card h2').nextElementSibling.id==='coupon-countdown'&&getComputedStyle(document.querySelector('#coupon-hours')).fontWeight==='700'&&getComputedStyle(document.querySelector('#coupon-hours')).color==='rgb(29, 33, 41)'&&getComputedStyle(document.querySelector('.coupon-divider')).borderLeftStyle==='dashed'&&getComputedStyle(document.querySelector('.coupon-divider')).borderLeftWidth==='1px'&&document.querySelector('.coupon-outline path').getAttribute('vector-effect')==='non-scaling-stroke'&&document.querySelector('.coupon-ticket').getBoundingClientRect().height<112;});
     check(fits,'layout fits '+width);
     await page.locator('#device').screenshot({path:'output/playwright/recall-'+width+'.png'});
   }

@@ -1,6 +1,6 @@
 # 前端接入说明 · 一圈最终版
 
-版本：`final-2026-10-15-zepto-sui-handoff`，2026-10-15。本次仅更新交付说明，运行源码保持已确认的一圈最终版。
+版本：`final-2026-10-16-mobile-coupon-lines`，2026-10-16。本次更新倒计时布局和移动端券线条，保留一圈最终版动效。
 运行源码为 `demo/index.html`。所有时间单位为毫秒，角度单位为度。
 
 现有项目请先看 [Zepto + SUI Mobile 接入清单](ZEPTO-SUI-INTEGRATION.md)：已确认框架、前端适配项、后端字段契约、请求包装示例和待联调范围分别列明。当前完整演示仍需拆分适配，不是直接引入即可替换业务页面的 SDK。
@@ -10,8 +10,8 @@
 - 卡片与顶部星星/金币整体绕 **Y 轴翻转 1 圈（360°）**；旋转角度从 -360 到 0，没有额外圈数。
 - 18 个爆散粒子（14 金星 + 4 微光），复用开场 WebP；粒子仅创建一次，重播不追加节点。
 - 保留两张原始透明 WebP、ZamCash 红色 `#E34D59`、已确认文案和布局。不引入动画库或外部字体。
-- 标题 `Welcome back!`，下方无小字；面额 `K{amount}` 动态更新；说明恢复为 `Pay on time` / `and reduce your loan cost`（保留显式换行）；按钮 `Apply now`。
-- 倒计时移入优惠券右上角红色角标，替代原券标；只显示 `05 days 23 hrs`，白字，数字 `font-weight:700`。券最小高度 76px，说明 padding 为 24px 10px 10px；窄屏自然换行允许高度增加。
+- 标题 `Welcome back!`，下方仅保留倒计时；面额 `K{amount}` 动态更新；说明恢复为 `Pay on time` / `and reduce your loan cost`（保留显式换行）；按钮 `Apply now`。
+- 倒计时位于标题下方（间距 8px），只显示 `05 days 23 hrs`，黑色 `#1d2129`，数字 `font-weight:700`；优惠券右上角恢复 `Repayment discount`。券最小高度 76px，说明 padding 为 24px 10px 10px；窄屏自然换行允许高度增加。
 - 业务含义：发券后 6 个自然日内申请该笔借款，还款时抵扣。倒计时不是还款截止时间；展示文案按最新确认恢复为 `Pay on time…`，前端不新增还款业务校验规则。
 - 包内 `asset-manifest.json` 给出精确体积与哈希。80,000 字节预算只计算运行资源，不把说明文件和校验清单发送给页面。
 
@@ -43,6 +43,7 @@
 源码包含历次覆盖样式，最后的 ZamCash 规则优先。迁移时保留样式顺序，不要仅复制最早一组同名规则。
 只将动效样式作用于组件根节点，不将演示 `.shell`、`body`、`:root`、全局 button/input 规则直接覆盖宿主全站。
 拆分 CSS 文件或打包图片时，同时更新 `<img src>`、preload、mask 与 CSS background 的相对路径。
+移动端兼容：券外框复用原素材轮廓作为内联 `.coupon-outline` SVG，1px 描边并使用 `vector-effect="non-scaling-stroke"`；`.coupon-divider` 为原生 `border-left:1px dashed`，不再依赖外部 SVG 背景或旋转细线。原始 SVG 文件保留供追溯；迁移时不能把线条退回旧实现。
 当前脚本通过固定 ID 查找单实例；若同页放多个实例，须改为根节点内查询并给内联 SVG 的渐变/path ID 加实例前缀。
 
 ## 3. 精确时间线
