@@ -1,6 +1,6 @@
 # 前端接入说明 · 一圈最终版
 
-版本：`final-2026-10-15-one-turn`，2026-10-15。
+版本：`final-2026-10-15-recall-one-turn`，2026-10-15。
 运行源码为 `demo/index.html`。所有时间单位为毫秒，角度单位为度。
 
 ## 1. 最终视觉和资源约束
@@ -8,7 +8,8 @@
 - 卡片与顶部星星/金币整体绕 **Y 轴翻转 1 圈（360°）**；旋转角度从 -360 到 0，没有额外圈数。
 - 18 个爆散粒子（14 金星 + 4 微光），复用开场 WebP；粒子仅创建一次，重播不追加节点。
 - 保留两张原始透明 WebP、ZamCash 红色 `#E34D59`、已确认文案和布局。不引入动画库或外部字体。
-- 标题 `Benefit Countdown`；倒计时 `02 day 14 hrs`；面额 `K25`；券标 `Discount`；说明 `Pay on time` / `and reduce your loan cost`；按钮 `Use Now`。换行以源码为准。
+- 标题 `Welcome back!`；倒计时前缀 `Apply within`；面额 `K{amount}`；券标 `Repayment discount`；说明 `Apply before this offer expires. Save K{amount} when you repay your loan.`；按钮 `Apply now`。金额两处同步更新。
+- 业务含义：发券后 6 个自然日内申请该笔借款，还款时抵扣。倒计时不是还款截止时间，不附加未经确认的“按时还款”条件。
 - 包内 `asset-manifest.json` 给出精确体积与哈希。80,000 字节预算只计算运行资源，不把说明文件和校验清单发送给页面。
 
 ## 2. 接入结构
@@ -138,28 +139,72 @@ spin = i % 2 ? 160 : -120;               // deg
 
 ## 5. 数据与交互接入
 
-现有 `play()` 位于 IIFE 内，是演示内部函数，没有导出的 SDK API。宿主封装时建议把“数据更新、重播、低性能开关、销毁”做成组件接口，沿用函数内部顺序。
+源码提供 `window.RewardCoupon` 单实例接口。**真实接入必须在本脚本执行前设置 `window.REWARD_COUPON_CONFIG = null`**，关闭默认模拟券；等待业务接口成功后调用 `show()`。不要把完整演示中的模拟数据初始化带入线上。
 
-1. 初始化时创建一次粒子 DOM，预加载并解码两张 WebP。
-2. 打开/重播时更新金额，重置已使用状态，应用低性能标志，等待素材策略完成。
-3. 正常模式添加 `.is-playing` 并禁用按钮。低性能/减少动态/图片未就绪或失败时直接走静态卡片分支。
-4. 监听 **按钮自身**的 `animationend`，同时判断 `event.animationName === 'veil-in'` 和 `.is-playing` 状态；移除 `.is-playing`，添加 `.is-ready`，启用按钮。
-5. Use Now 当前只隐藏动效层并显示演示 Coupon 行；接入真实业务时替换为宿主的使用优惠券流程，处理接口中的 loading、成功、失败与重复点击。
+```html
+<!-- 在动效脚本执行前，禁止演示券自动出现 -->
+<script>window.REWARD_COUPON_CONFIG = null;</script>
+```
 
-不要用固定 `setTimeout(2200)` 解锁按钮：后台暂停时会早于视觉时间线结束。
-保留 `run` 序号校验，避免快速连续重播时旧的素材等待结果覆盖新播放。
-SPA 卸载组件时移除 change/click/animationend/visibilitychange/media 监听，并让尚未完成的异步回调失效。
+```js
+// 以下 couponResponse 由宿主真实接口返回，不在前端推导金额档位或发券时间。
+const shown = await window.RewardCoupon.show({
+  id: couponResponse.id,
+  amount: couponResponse.amount,
+  eligible: couponResponse.eligible,
+  status: couponResponse.status,
+  expiresAt: couponResponse.expiresAt,
+  serverNow: couponResponse.serverNow,
+}, {
+  lowPerformance: devicePolicy.reduceMotion,
+  onApply: async (coupon) => {
+    // 宿主实现：服务端重验券，再进入申请流程并携带 coupon.id。
+    // 成功跳转/交接后 resolve；失败 reject，并由宿主显示业务错误。
+    // 点击本身不代表申请成功、绑定成功或已经抵扣还款。
+    await host.startLoanApplication({ couponId: coupon.id });
+  },
+});
+```
 
-当前默认 K25，演示输入限定 1–9999 整数；数字用 `en-US` 千分位显示，超过 999 会添加 `.large-amount`。
-倒计时、借款金额、费用、账户均为设计稿静态内容，没有真实倒计时逻辑或费用计算。真实金额、券资格和过期时间应由业务数据驱动，不能把演示静态字段当作接口结果。
+也可预先传入 `window.REWARD_COUPON_CONFIG = {coupon, lowPerformance, onApply}` 直接初始化。示例 `host` / `devicePolicy` / `couponResponse` 是宿主适配接口，不是本包内实现。
+
+| 字段 | 类型 / 约束 | 含义 |
+| --- | --- | --- |
+| `id` | 非空字符串 | 后端真实券 ID，申请流程用它重新校验和绑定 |
+| `amount` | 1–9999 整数 | 实际发放的 K 金额；示例业务券为 25 / 50 / 100，前端不计算授信区间 |
+| `eligible` | 严格为 `true` 才展示 | 后端已完成召回人群、活动规则、发券/展示频控等条件判断 |
+| `status` | 严格为 `available` 才展示 | 其他状态包括已绑定、已使用、已撤销等，均不展示 |
+| `expiresAt` | UTC Unix 毫秒整数 | 申请使用优惠券的真实截止时刻，由后端按赞比亚业务时区计算 6 个自然日 |
+| `serverNow` | UTC Unix 毫秒整数 | 本次响应的服务端当前时间；每次刷新数据都要更新，不能重用陈旧时间 |
+| `lowPerformance` | boolean，位于第二个参数 | 宿主低性能策略；与演示开关、系统减少动态合并判断 |
+| `onApply` | 返回 Promise 或同步返回的函数，位于第二个参数 | 点击 Apply now 后交给宿主；未提供时按钮保持禁用 |
+
+**金额、过期时间、ID 缺失或格式不合法，不弹券，也不回退到 K25。** 不满足资格、状态不可用、截止时间已到，也不播放。后端须确定授信档位边界（原需求在 K450、K950 重叠），前端不能自行决定包含关系。
+
+时间处理：以 `serverNow + performance.now()` 的经过时间推进，每秒重算 `expiresAt - now`，不依赖定时器执行次数；展示 `5d 23:59:59` 或不足一天的 `23:59:59`。重播不更新截止时间、不重新发券。到期后关闭动效/遮罩并禁用按钮，素材等待中、播放中、静态模式和点击前都会检查有效性。后台暂停的是 CSS 动画，回前台会立即检查倒计时；设备长时间休眠后，宿主应重新请求最新服务端时间/券状态（不同系统的单调时钟在休眠期间行为可能不同）。接口网络延迟不由演示校正，服务端仍是是否允许申请的最终裁决。
+
+| API | 行为 |
+| --- | --- |
+| `show(coupon, options)` | 替换数据并按资格触发一次播放，返回 Promise<boolean>；false 表示被拒绝、关闭或被新请求替代 |
+| `replay()` | 按当前数据重播，不延长有效期；申请回调未完成时不重播 |
+| `close()` | 关闭卡片，清理倒计时，使在途素材/申请回调的 UI 更新失效；不取消宿主已发送的业务请求 |
+| `destroy()` | 关闭并移除全部事件/定时器，实例不再接受 show；SPA 卸载时调用 |
+
+动画交互：保留独立缩放/旋转、素材准备策略和 `run` 序号检查。正常模式必须等待按钮自身的 `animationend` 且 `animationName === 'veil-in'` 后解锁；不要用 `setTimeout(2200)`，否则后台暂停会提早解锁。静态降级在数据仍有效时直接解锁。
+
+申请回调执行中按钮禁用，阻止连点；成功后关闭弹窗，**不显示原先模拟的 Coupon -K25 扣款行**。失败时若券仍有效则恢复按钮，并在 `#screen` 派发 `couponapplyerror`，`event.detail` 含 `couponId` 与 `error`，由宿主处理错误提示。同一实例中新券已替换旧券时，旧回调不会关闭新券。宿主需保证请求幂等，申请成功/券绑定后刷新服务端状态，避免再次调用旧的 available 数据。不得把点击成功当作真实绑定/抵扣完成。
+
+演示边界：未设置配置全局变量时，使用一张模拟券，金额输入驱动 `amount`，首次访问生成约 6 天的截止时间并存入 `localStorage`（键 `zamcash-recall-demo-expiresAt`）。刷新/重播沿用它，到期不自动续期；这是便于产品确认的模拟时长，真实自然日边界仅由后端计算。预览的 Apply now 只关闭弹窗并回到申请页面背景，不会发起借款或抵扣。浏览器禁用存储时，模拟截止时间仅在本页生命周期内保持；生产数据不依赖浏览器存储。接入模式禁用演示金额输入。
+
+借款金额、费用、账户仍为设计稿背景静态样例，没有真实费用计算。演示脚本不调用真实接口，不自行执行短信发送任务或推导召回人群，不内置跨页面/跨会话频控；这些由宿主后端决定。不要把倒计时或客户端校验作为真实发券、申请审批的依据。
 
 ## 6. 低性能与异常降级
 
-| 条件 | 当前触发方式 | 表现与交互 |
+| 条件 | 触发方式 | 表现与交互 |
 | --- | --- | --- |
-| 用户/宿主选择低性能 | 演示 checkbox 对应 `.low-motion` | 素材等待/超时策略完成后直接显示最终卡片；跳过入场、爆散、光线及就绪后的装饰运动；按钮可用 |
+| 用户/宿主选择低性能 | `lowPerformance` 或演示 checkbox 对应 `.low-motion` | 素材等待/超时策略完成后直接显示最终卡片；跳过入场、爆散、光线及就绪后的装饰运动；有效券且配置申请回调时按钮可用 |
 | 系统减少动态 | `matchMedia('(prefers-reduced-motion: reduce)')`，CSS 同时有媒体查询 | 同样直接静态展示；监听偏好变化后重新走播放决策 |
-| 素材超过 1200ms 未全部解码 | `.asset-pending` | 用内联 SVG 兜底，静态展示且按钮可用；素材后来全部成功后替换成 WebP，不重播、不重开已使用的卡片 |
+| 素材超过 1200ms 未全部解码 | `.asset-pending` | 用内联 SVG 兜底，静态展示；有效券且配置申请回调时按钮可用；素材后来全部成功后替换成 WebP，不重播、不重开已使用的卡片 |
 | 任意主 WebP 解码失败 | `.asset-error`，`failed = true` | 保留 SVG 兜底；当前实例后续重播仍走降级分支，源码未实现网络重试复位 |
 | 页面进入后台 | `document.hidden` → `.is-paused` | 暂停所有 CSS 动画及 `:after` 动画；返回前台继续，按钮按 CSS 动画结束时机解锁 |
 | 浏览器不支持图片 mask | `@supports` 未通过 | 仅不显示星星扫光，其余流程照常 |
@@ -175,7 +220,8 @@ SPA 卸载组件时移除 change/click/animationend/visibilitychange/media 监�
 - HTML 和 SVG 用 gzip（测量 level 6）；WebP/PNG 直接传输。确保服务器响应具备正确 MIME 和 `Content-Encoding: gzip`；不要仅因 ZIP 很小就认定线上已压缩。
 - 清单已包含完整演示背景素材，迁入真实页面后可只保留实际依赖，但先确认 CSS background/mask 与 SVG 兜底仍完整。
 - 低端优化原则：复用已解码图片、一次创建粒子、保留有限播放次数、只对 transform/opacity 做动画；不用逐帧 JS 调布局，不新增大面积动态 blur。
-- 验收正常首播/重播、1 圈累计 360°、18 个粒子、金额最大值、320/360/390px、Use Now、低性能/系统减少动态、素材失败和超过 1200ms、后台暂停、快速重播、file:// 离线。
-- 最终一圈版本实测累计角度 360°，18 粒子，正常领取与两种减少动态模式通过；此前验证覆盖窄屏、暂停、慢图/坏图和离线。目标市场低端真机尚未验证。
+- 验收正常首播/重播、1 圈累计 360°、18 个粒子、金额最大值、320/360/390px、Apply now、低性能/系统减少动态、素材失败和超过 1200ms、后台暂停、快速重播、file:// 离线。
+- 动态数据版本已通过 30 项浏览器断言，包括无资格、金额非法、已过期、播放中到期、刷新/重播不续期、申请失败/重复点击、数据替换、组件销毁及 320/390/1200px 排版；回归脚本位于源码仓库 `tests/recall-coupon.browser.js`。
+- 最终一圈版本实测累计角度 360°，18 粒子，正常展示与两种减少动态模式通过；此前验证覆盖窄屏、暂停、慢图/坏图和离线。目标市场低端真机尚未验证。
 
 原始文档保存在 `references/` 供追溯，其旧规格不覆盖本文件。不要把演示外围控制区、说明和体积数字作为线上产品业务文案。

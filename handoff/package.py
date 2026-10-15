@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'reward-motion-v2'
 OUTPUT = ROOT / 'output' / 'zamcash-reward-final.zip'
 PREFIX = 'zamcash-reward-final/'
-VERSION = 'final-2026-10-15-one-turn'
+VERSION = 'final-2026-10-15-recall-one-turn'
 
 
 def sha(data):
