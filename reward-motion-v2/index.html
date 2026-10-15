@@ -63,10 +63,10 @@
 0%{opacity:0;transform:translateY(8px) scale(.08)}
 12%{opacity:1}
 100%{opacity:1;transform:translateY(0) scale(1)}}
-/* Split the prior curve at two turns; preserve its timing and join velocity. */
+/* One full turn; retain the normalized timing and soft stop. */
 @keyframes reward-turn{
-0%{transform:rotateY(-1080deg);animation-timing-function:cubic-bezier(.336590,.296449,.603158,.690273)}
-45.067141%{transform:rotateY(-360deg);animation-timing-function:cubic-bezier(.230493,.438551,.530806,1)}
+0%{transform:rotateY(-360deg);animation-timing-function:cubic-bezier(.336590,.296449,.603158,.690273)}
+45.067141%{transform:rotateY(-120deg);animation-timing-function:cubic-bezier(.230493,.438551,.530806,1)}
 100%{transform:rotateY(0deg)}}
 @keyframes flash{0%{opacity:0;transform:scale(.3)}24%{opacity:.75;transform:scale(.85)}100%{opacity:0;transform:scale(1.35)}}
 @keyframes glow-breathe{0%{opacity:0;transform:scale(1)}40%{opacity:.85;transform:scale(1.55)}100%{opacity:1;transform:scale(1.5)}}

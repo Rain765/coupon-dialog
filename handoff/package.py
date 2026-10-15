@@ -1,0 +1,79 @@
+"""Build and verify the frontend handoff without modifying runtime files."""
+from pathlib import Path
+import gzip
+import hashlib
+import json
+import subprocess
+import zipfile
+
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE = ROOT / 'reward-motion-v2'
+OUTPUT = ROOT / 'output' / 'zamcash-reward-final.zip'
+PREFIX = 'zamcash-reward-final/'
+VERSION = 'final-2026-10-15-one-turn'
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def main():
+    runtime = sorted(p for p in SOURCE.rglob('*')
+                     if p.is_file() and p.suffix in {'.html', '.svg', '.png', '.webp'})
+    payload = {'demo/' + p.relative_to(SOURCE).as_posix(): p.read_bytes() for p in runtime}
+    sizes = []
+    for name, data in payload.items():
+        compressed = name.endswith(('.html', '.svg'))
+        sizes.append({'path': name, 'sha256': sha(data), 'raw_bytes': len(data),
+                      'transfer_bytes': len(gzip.compress(data, compresslevel=6, mtime=0))
+                      if compressed else len(data),
+                      'encoding': 'gzip-level-6' if compressed else 'identity'})
+    total = sum(row['transfer_bytes'] for row in sizes)
+    if total > 80000:
+        raise SystemExit(f'Runtime budget exceeded: {total} bytes')
+    html = payload['demo/index.html'].decode()
+    if '0%{transform:rotateY(-360deg);' not in html or 'rotateY(-1080deg)' in html:
+        raise SystemExit('Expected the approved one-turn runtime')
+    for destination, source in {
+        'README.md': ROOT / 'handoff/README.md',
+        'docs/FRONTEND-INTEGRATION.md': ROOT / 'handoff/FRONTEND-INTEGRATION.md',
+        'references/original-README.txt': SOURCE / 'README.txt',
+        'references/asset-prompts.txt': SOURCE / 'asset-prompts.txt',
+        'references/FIGMA-SOURCE.txt': SOURCE / 'FIGMA-SOURCE.txt',
+    }.items():
+        payload[destination] = source.read_bytes()
+    commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    dirty = bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True).strip())
+    manifest = {
+        'version': VERSION, 'source_commit': commit, 'source_dirty': dirty,
+        'runtime_transfer_bytes': total, 'runtime_budget_bytes': 80000,
+        'budget_headroom_bytes': 80000 - total,
+        'measurement': 'HTML/SVG gzip level 6; PNG/WebP identity; excludes HTTP headers, docs and ZIP overhead',
+        'motion': {'axis': 'Y', 'turns': 1, 'degrees': 360, 'burst_particles': 18,
+                   'rotation_ms': {'delay': 600, 'duration': 1200},
+                   'growth_ms': {'delay': 600, 'duration': 1400}, 'interactive_at_ms': 2200},
+        'runtime_files': sizes,
+        'other_files': [{'path': name, 'sha256': sha(data), 'raw_bytes': len(data)}
+                        for name, data in payload.items() if not name.startswith('demo/')],
+    }
+    payload['asset-manifest.json'] = (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode()
+    payload['SHA256SUMS.txt'] = ''.join(f'{sha(data)}  {name}\n' for name, data in sorted(payload.items())).encode()
+    OUTPUT.parent.mkdir(exist_ok=True)
+    with zipfile.ZipFile(OUTPUT, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+        for name, data in sorted(payload.items()):
+            archive.writestr(PREFIX + name, data)
+    with zipfile.ZipFile(OUTPUT) as archive:
+        assert archive.testzip() is None
+        assert set(archive.namelist()) == {PREFIX + name for name in payload}
+        for name, data in payload.items():
+            assert archive.read(PREFIX + name) == data, name
+        for line in payload['SHA256SUMS.txt'].decode().splitlines():
+            digest, name = line.split('  ', 1)
+            assert sha(archive.read(PREFIX + name)) == digest, name
+    print(json.dumps({'archive': str(OUTPUT), 'archive_bytes': OUTPUT.stat().st_size,
+                      'runtime_bytes': total, 'source_commit': commit,
+                      'source_dirty': dirty, 'files_verified': len(payload)}, ensure_ascii=False))
+
+
+if __name__ == '__main__':
+    main()
