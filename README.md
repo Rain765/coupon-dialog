@@ -8,6 +8,16 @@ ZamCash 轻量优惠券奖励动效，使用 WebP + CSS + JavaScript，无第三
 
 当前为 **Y 轴翻转一圈（360°）最终版**，支持动态金额、天/时/分/秒倒计时与低性能静态降级。移动端动效展示区位于标题栏下方，控制区在其后。
 
+## 换设备继续优化
+
+请让 Codex 先读取根目录 [AGENTS.md](AGENTS.md)：其中记录当前最终版文案、12 个爆散粒子及三颗大金星、一圈时间线、80 KB 预算、移动端兼容修复、动态数据与降级约束，以及验证、GitHub 同步和原 Sites 预览发布方式。
+
+在新设备克隆最新 `main` 后，可以直接告诉 Codex：
+
+> 先读取 AGENTS.md 和 handoff/FRONTEND-INTEGRATION.md，基于最新 main 继续优化 coupon-dialog；只修改我本次提出的部分，保留其余已确认要求。
+
+代码和素材均在仓库内；`output/` 交付包可重新生成。更新 GitHub 不会自动更新 Sites，原预览发布需要有权限的 Sites 账号。
+
 ## 本地运行
 
 无需安装前端依赖。安装 Git 和 Python 3 后，克隆仓库并启动本地服务器：
