@@ -18,7 +18,7 @@ ZamCash Reward Motion — 一圈最终版（2026-10-15）
 - 就绪装饰仅播放 2 次，正常播放最迟 8600 ms 全部停止。
 
 体积
-HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.6 KB，精确体积与剩余预算见交付包 asset-manifest.json。
+HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.7 KB，精确体积与剩余预算见交付包 asset-manifest.json。
 不含 HTTP 头、交付文档和 ZIP 容器开销。线上需为 HTML/SVG 开启 gzip；Python 预览服务不自动压缩。
 
 降级
@@ -42,11 +42,15 @@ HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.6 KB，精确体积与剩
 
 紧凑排版更新
 - 右侧说明恢复为 Pay on time / and reduce your loan cost，显式换行。
-- 标题下方仅倒计时，黑字、数字加粗，仅天/小时；券右上角恢复 Repayment discount。
-- 券最小高度 76px；小时显示向下取整，真实过期判断仍按毫秒截止时间。
+- 标题下方仅倒计时，黑字、数字加粗，天/时/分/秒简写为 d/h/m/s，数字字号 28px；券右上角恢复 Repayment discount。
+- 券最小高度 76px；总秒数向下取整后拆分为天/时/分/秒，真实过期判断仍按毫秒截止时间。
 
 2026-10-16 移动端线条修复
 - WebKit 手机模拟复现旧虚线缺失，两个 SVG 请求均为 200；该环境旧外框可见，未完全复现反馈中的外框消失。
 - 券外框改为原轮廓内联 SVG + 1px 非缩放描边；虚线改为原生 CSS border-left，消除外部 SVG 背景和旋转细线依赖。原始素材文件不修改。
 - WebKit 对照确认：原虚线 SVG height=0.5 时 naturalHeight=0 且 decode 报 EncodingError；仅将 height 改为 1 即可解码并绘制。最终采用原生 CSS 虚线避免该问题。
 - Chromium 与 WebKit 各通过 32 项浏览器断言；新外框与虚线已截图检查，低端真机仍待验收。
+
+2026-10-16 秒级倒计时
+- 标题下方数字增至 28px，单位 13px，显示 05d 23h 59m 59s。每秒由服务端时钟推算剩余时间，重播不延长有效期。
+- 保留既有一圈动效、券角标、移动端线框与低性能分支；降级时倒计时仍正常更新。

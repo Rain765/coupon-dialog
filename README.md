@@ -6,7 +6,7 @@ ZamCash 轻量优惠券奖励动效，使用 WebP + CSS + JavaScript，无第三
 
 [打开预览（支持手机和桌面）](https://zamcash-reward-one-turn-20261015.sumu1212.chatgpt.site/)
 
-当前为 **Y 轴翻转一圈（360°）最终版**，支持动态金额、天/小时倒计时与低性能静态降级。移动端动效展示区位于标题栏下方，控制区在其后。
+当前为 **Y 轴翻转一圈（360°）最终版**，支持动态金额、天/时/分/秒倒计时与低性能静态降级。移动端动效展示区位于标题栏下方，控制区在其后。
 
 ## 本地运行
 
@@ -40,4 +40,4 @@ python3 -m http.server 8765 --bind 127.0.0.1
 python3 handoff/package.py
 ```
 
-生成 `output/zamcash-reward-final.zip`，包含演示源码、素材、接入说明和 SHA-256 校验清单。脚本校验运行资源不超过 80,000 字节；当前约 74.6 KB，按 HTML/SVG gzip level 6 + PNG/WebP 原始大小计算，不含文档和 ZIP 开销。本地 Python 服务器不会自动开启 gzip，线上需单独配置。
+生成 `output/zamcash-reward-final.zip`，包含演示源码、素材、接入说明和 SHA-256 校验清单。脚本校验运行资源不超过 80,000 字节；当前约 74.7 KB，按 HTML/SVG gzip level 6 + PNG/WebP 原始大小计算，不含文档和 ZIP 开销。本地 Python 服务器不会自动开启 gzip，线上需单独配置。
