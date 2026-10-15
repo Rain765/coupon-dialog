@@ -1,6 +1,6 @@
 # 前端接入说明 · 一圈最终版
 
-版本：`final-2026-10-15-recall-compact-one-turn`，2026-10-15。
+版本：`final-2026-10-15-recall-minimal-one-turn`，2026-10-15。
 运行源码为 `demo/index.html`。所有时间单位为毫秒，角度单位为度。
 
 ## 1. 最终视觉和资源约束

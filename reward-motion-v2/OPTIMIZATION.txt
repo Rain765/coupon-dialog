@@ -18,7 +18,7 @@ ZamCash Reward Motion — 一圈最终版（2026-10-15）
 - 就绪装饰仅播放 2 次，正常播放最迟 8600 ms 全部停止。
 
 体积
-HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.2 KB，精确体积与剩余预算见交付包 asset-manifest.json。
+HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 74.0 KB，精确体积与剩余预算见交付包 asset-manifest.json。
 不含 HTTP 头、交付文档和 ZIP 容器开销。线上需为 HTML/SVG 开启 gzip；Python 预览服务不自动压缩。
 
 降级
