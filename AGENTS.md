@@ -5,7 +5,7 @@
 ## 当前基线与入口
 
 - 项目：ZamCash 非洲市场老用户召回优惠券，轻量 WebP + CSS + JavaScript，无第三方动画库。
-- 当前视觉版本：`final-2026-10-16-compact-400`（2026-10-16）。本版通过收紧垂直留白将包含顶部素材的整体高度控制在约 400px；保留浅红投影、中心清晰和外缘柔化；按钮及动效时间线保持不变，后续从 GitHub 最新 `main` 继续。
+- 当前视觉版本：`final-2026-10-16-coupon-tint`（2026-10-16）。本版弹窗渐变参照券内底色 #FDF3F4 微调为同色系浅粉红，整体高度仍约 400px；保留浅红投影、中心清晰和外缘柔化；按钮及动效时间线保持不变，后续从 GitHub 最新 `main` 继续。
 - 仓库：<https://github.com/Rain765/coupon-dialog>。
 - 预览：<https://zamcash-reward-one-turn-20261015.sumu1212.chatgpt.site/>。
 - 运行入口：`reward-motion-v2/index.html`，内含页面、CSS、JavaScript；`star-v2.webp`、`reward-v2.webp` 和 `assets/` 已全部提交，可直接克隆运行。
@@ -14,7 +14,7 @@
 
 ## 已确认的视觉与文案
 
-- 保持 ZamCash 红色 `#E34D59`，卡片浅红到白渐变：`linear-gradient(#fbdde1 0%,#fff0f2 55%,#fff 100%)`。
+- 保持 ZamCash 红色 `#E34D59`，卡片浅红到白渐变：`linear-gradient(#f9dfe2 0%,#fdf1f2 55%,#fff 100%)`。
 - 标题：`Welcome back!`。标题下方只放倒计时，不恢复已删除的说明小字。
 - 优惠券右侧文案严格保留两段：`Pay on time` + 显式换行 + `and reduce your loan cost`。不自行改写、补充或翻译。
 - 角标：`Repayment discount`；按钮：`Apply now`；面额：动态 `K{amount}`。
@@ -48,7 +48,7 @@
 
 ## 性能与移动端兼容
 
-- 运行资源预算为 **80,000 字节以内**：HTML/SVG gzip level 6，WebP/PNG 按原始字节计，不包含文档、HTTP 头和 ZIP 开销。当前为 77,619 字节，约 77.6 KB；后续以实际重新打包测量为准。
+- 运行资源预算为 **80,000 字节以内**：HTML/SVG gzip level 6，WebP/PNG 按原始字节计，不包含文档、HTTP 头和 ZIP 开销。当前为 77,621 字节，约 77.6 KB；后续以实际重新打包测量为准。
 - 不引入第三方动画库、外部字体或不必要的大素材。优先复用已有透明 WebP；改图时保持透明边缘并重新测量体积。
 - 已修复手机端券线条丢失：外框采用内联 `.coupon-outline` SVG 与 `vector-effect="non-scaling-stroke"`，分隔线采用 CSS `border-left:1px dashed`。不要退回外部 SVG 背景或旋转细线实现。
 - 保留 `lowPerformance`、系统 `prefers-reduced-motion`、图片失败/解码超过 1200ms 的静态降级与 SVG 兜底；静态模式仍须有正确倒计时和可用按钮，不能只关 CSS 动画却继续等待 `animationend`。
