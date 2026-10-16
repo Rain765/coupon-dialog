@@ -44,6 +44,15 @@ def main():
         'references/FIGMA-SOURCE.txt': SOURCE / 'FIGMA-SOURCE.txt',
     }.items():
         payload[destination] = source.read_bytes()
+    # Keep the packaged API note/examples identical to the GitHub README source.
+    readme = (ROOT / 'README.md').read_text()
+    integration = readme.split('## 前端接入说明\n\n', 1)[1]
+    note = integration.split('\n\n', 1)[0]
+    examples = readme.split('### 后端返回 JSON 示例\n', 1)[1].split('\n## 生成交付包', 1)[0]
+    payload['docs/API-EXAMPLES.md'] = (
+        '# 后端字段与前端调用示例\n\n' + note +
+        '\n\n### 后端返回 JSON 示例\n' + examples.rstrip() + '\n'
+    ).encode()
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     dirty = bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True).strip())
     manifest = {

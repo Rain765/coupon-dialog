@@ -3,6 +3,8 @@
 最终规格：**卡片绕竖直中轴（Y 轴）左右翻转 1 圈，累计 360°。**
 版本：`final-2026-10-16-three-large-stars`。标题下方倒计时采用 24px 数字、白色圆角底块与 d/h/m/s 简写，每秒更新；保留券角标、移动端线条修复和一圈动效。
 
+本次交付补充 `docs/API-EXAMPLES.md`，包含可转发的简短说明、后端 JSON 和 Zepto 调用示例，与 GitHub README 同步。当前仍未接入真实后端接口。
+
 ## 快速查看
 
 解压后直接打开 `demo/index.html`，也可以在解压目录运行：
@@ -22,6 +24,7 @@ python3 -m http.server 8765
 | `demo/star-v2.webp` | 开场大星星及爆散小金星共用素材 |
 | `demo/reward-v2.webp` | 卡片顶部星星、金币、红色飘带素材 |
 | `demo/assets/` | 15 个 SVG、1 个 PNG，来自项目设计稿 |
+| `docs/API-EXAMPLES.md` | 金额/倒计时字段、后端 JSON、Zepto 调用、初始化顺序和接口占位说明 |
 | `docs/FRONTEND-INTEGRATION.md` | 接入、精确时间线、缓动参数、状态与降级方式 |
 | `docs/ZEPTO-SUI-INTEGRATION.md` | 现有框架适配清单、后端字段契约、Zepto 请求示例及联调边界 |
 | `docs/ASSET-CHANGES.md` | 红色飘带素材的编辑方式、提示词与压缩规格 |
