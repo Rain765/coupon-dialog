@@ -1,7 +1,7 @@
 # ZamCash 奖励动效 · 前端交付
 
 最终规格：**卡片绕竖直中轴（Y 轴）左右翻转半圈，累计 180°。**
-版本：`final-2026-10-16-early-button`。标题下方倒计时采用 24px 数字、白色圆角底块与 d/h/m/s 简写，每秒更新；保留券角标、移动端线条修复和半圈动效。
+版本：`final-2026-10-16-clear-center`。标题下方倒计时采用 24px 数字、白色圆角底块与 d/h/m/s 简写，每秒更新；保留券角标、移动端线条修复和半圈动效。
 
 本次交付补充 `docs/API-EXAMPLES.md`，包含可转发的简短说明、后端 JSON 和 Zepto 调用示例，与 GitHub README 同步。当前仍未接入真实后端接口。
 
@@ -37,7 +37,7 @@ python3 -m http.server 8765
 - 12 个爆散粒子：9 颗金星 + 3 个微光点，保留金色拖尾。
 - 卡片半圈翻转：0.6–1.2 秒；连续放大：0.6–1.3 秒；按钮 0.9 秒开始渐显，1.3 秒后可用。
 - 右侧文案恢复为 Pay on time / and reduce your loan cost；券高保持紧凑，申请倒计时位于标题下方，黑字、数字加粗，显示 d/h/m/s 四段倒计时；券角标为 Repayment discount；金额动态绑定，保留配色和素材。模拟默认 K25，真实接入读取后端字段。
-- 运行资源约 **77.4 KB**，准确字节数见清单。口径为 HTML/SVG gzip level 6 + PNG/WebP 原始字节，不含 HTTP 头、文档和 ZIP 容器开销。
+- 运行资源约 **77.5 KB**，准确字节数见清单。口径为 HTML/SVG gzip level 6 + PNG/WebP 原始字节，不含 HTTP 头、文档和 ZIP 容器开销。
 - 线上要为 HTML/SVG 启用 gzip。上述 Python 预览服务器不会自动启用 gzip。
 
 ## 交付边界

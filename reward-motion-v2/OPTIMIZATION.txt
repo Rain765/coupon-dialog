@@ -18,7 +18,7 @@ ZamCash Reward Motion — 半圈最终版（2026-10-16）
 - 就绪装饰仅播放 2 次，正常播放最迟 8600 ms 全部停止。
 
 体积
-HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 77.4 KB，精确体积与剩余预算见交付包 asset-manifest.json。
+HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 77.5 KB，精确体积与剩余预算见交付包 asset-manifest.json。
 不含 HTTP 头、交付文档和 ZIP 容器开销。线上需为 HTML/SVG 开启 gzip；Python 预览服务不自动压缩。
 
 降级
@@ -73,3 +73,5 @@ HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 77.4 KB，精确体积与剩
 2026-10-16 倍速放大：放大由 1400ms 缩短至 700ms，600–1300ms 完成；与 600–1200ms 的半圈旋转同时起步，保留末端 100ms 柔和收尾，其他效果不变。
 
 2026-10-16 提前按钮：900ms 开始，400ms 渐显后解锁；通过独立 scene-settle CSS 时钟保留 2200ms 装饰交接，后台暂停和静态降级逻辑保留。
+
+2026-10-16 中心清晰：hero:after 复用原 WebP，以径向遮罩恢复中心星星/金币细节；底层 blur(.55px) 保留外缘柔化。未新增或修改图片文件，旋转、放大及按钮时间线不变。
