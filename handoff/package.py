@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'reward-motion-v2'
 OUTPUT = ROOT / 'output' / 'zamcash-reward-final.zip'
 PREFIX = 'zamcash-reward-final/'
-VERSION = 'final-2026-10-16-three-large-stars'
+VERSION = 'final-2026-10-16-half-turn'
 
 
 def sha(data):
@@ -32,8 +32,8 @@ def main():
     if total > 80000:
         raise SystemExit(f'Runtime budget exceeded: {total} bytes')
     html = payload['demo/index.html'].decode()
-    if '0%{transform:rotateY(-360deg);' not in html or 'rotateY(-1080deg)' in html:
-        raise SystemExit('Expected the approved one-turn runtime')
+    if '0%{transform:rotateY(-180deg);' not in html or any(old in html for old in ('rotateY(-360deg)', 'rotateY(-1080deg)')):
+        raise SystemExit('Expected the approved half-turn runtime')
     for destination, source in {
         'README.md': ROOT / 'handoff/README.md',
         'docs/FRONTEND-INTEGRATION.md': ROOT / 'handoff/FRONTEND-INTEGRATION.md',
@@ -60,7 +60,7 @@ def main():
         'runtime_transfer_bytes': total, 'runtime_budget_bytes': 80000,
         'budget_headroom_bytes': 80000 - total,
         'measurement': 'HTML/SVG gzip level 6; PNG/WebP identity; excludes HTTP headers, docs and ZIP overhead',
-        'motion': {'axis': 'Y', 'turns': 1, 'degrees': 360, 'burst_particles': 12,
+        'motion': {'axis': 'Y', 'turns': 0.5, 'degrees': 180, 'burst_particles': 12,
                    'rotation_ms': {'delay': 600, 'duration': 1200},
                    'growth_ms': {'delay': 600, 'duration': 1400}, 'interactive_at_ms': 2200},
         'runtime_files': sizes,

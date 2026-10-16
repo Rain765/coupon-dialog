@@ -83,7 +83,7 @@ async (page) => {
     for(let t=600;t<=1800;t+=5){a.currentTime=t;const m=new DOMMatrix(getComputedStyle(document.querySelector('.reward-turn')).transform);const angle=Math.atan2(-m.m13,m.m11)*180/Math.PI;if(prev!==null){let delta=angle-prev;while(delta>180)delta-=360;while(delta< -180)delta+=360;total+=delta}prev=angle}
     return total;
   });
-  check(Math.abs(Math.abs(degrees)-360)<0.01,'exactly one Y-axis turn');
+  check(Math.abs(Math.abs(degrees)-180)<0.01,'exactly half a Y-axis turn');
   const burst = await page.evaluate(async()=>{
     const rays=[...document.querySelectorAll('.burst-ray')],first=rays[0];
     const before=rays.map(e=>e.style.cssText).join();
