@@ -14,7 +14,7 @@ async (page) => {
     time: document.querySelector('#coupon-countdown').textContent,
     enabled: !document.querySelector('#claim').disabled,
   }));
-  check(initial.title === 'Welcome back!' && initial.label === 'Repayment discount' && /^\d{2}d \d{2}h \d{2}m \d{2}s$/.test(initial.time) && initial.button === 'Apply now' && initial.copy === 'Pay on time\nand reduce your loan cost', 'approved copy');
+  check(initial.title === 'Welcome Back!' && initial.label === 'Repayment discount' && /^\d{2}d \d{2}h \d{2}m \d{2}s$/.test(initial.time) && initial.button === 'Apply now' && initial.copy === 'Repay on time\nEnjoy instant benefits', 'approved copy');
   check(initial.enabled, 'animation unlock');
   await page.evaluate(()=>window.RewardCoupon.replay());await page.waitForTimeout(1400);
   check(await page.evaluate(()=>!document.querySelector('#claim').disabled&&document.querySelector('#screen').classList.contains('is-playing')&&!document.querySelector('#screen').classList.contains('is-ready')),'early button unlock preserves decoration timeline');

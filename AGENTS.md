@@ -5,7 +5,7 @@
 ## 当前基线与入口
 
 - 项目：ZamCash 非洲市场老用户召回优惠券，轻量 WebP + CSS + JavaScript，无第三方动画库。
-- 当前视觉版本：`final-2026-10-16-coupon-tint`（2026-10-16）。本版弹窗渐变参照券内底色 #FDF3F4 微调为同色系浅粉红，整体高度仍约 400px；保留浅红投影、中心清晰和外缘柔化；按钮及动效时间线保持不变，后续从 GitHub 最新 `main` 继续。
+- 当前视觉版本：`final-2026-10-16-repay-copy`（2026-10-16）。本版标题为 Welcome Back!，券说明为 Repay on time / Enjoy instant benefits；整体高度仍约 400px；保留浅红投影、中心清晰和外缘柔化；按钮及动效时间线保持不变，后续从 GitHub 最新 `main` 继续。
 - 仓库：<https://github.com/Rain765/coupon-dialog>。
 - 预览：<https://zamcash-reward-one-turn-20261015.sumu1212.chatgpt.site/>。
 - 运行入口：`reward-motion-v2/index.html`，内含页面、CSS、JavaScript；`star-v2.webp`、`reward-v2.webp` 和 `assets/` 已全部提交，可直接克隆运行。
@@ -15,8 +15,8 @@
 ## 已确认的视觉与文案
 
 - 保持 ZamCash 红色 `#E34D59`，卡片浅红到白渐变：`linear-gradient(#f9dfe2 0%,#fdf1f2 55%,#fff 100%)`。
-- 标题：`Welcome back!`。标题下方只放倒计时，不恢复已删除的说明小字。
-- 优惠券右侧文案严格保留两段：`Pay on time` + 显式换行 + `and reduce your loan cost`。不自行改写、补充或翻译。
+- 标题：`Welcome Back!`。标题下方只放倒计时，不恢复已删除的说明小字。
+- 优惠券右侧文案严格保留两段：`Repay on time` + 显式换行 + `Enjoy instant benefits`。不自行改写、补充或翻译。
 - 角标：`Repayment discount`；按钮：`Apply now`；面额：动态 `K{amount}`。
 - 倒计时位于标题下方，示例 `05d 23h 59m 59s`，每秒更新；单位使用单字母 d/h/m/s。数字黑色、24px、粗体，每组两位数字后为白色圆角矩形；单位 13px。不要移回优惠券角标位置。
 - 优惠券保持紧凑：最小高度 76px；右侧文字 padding 为 `20px 10px 14px`，比之前上移 4px；窄屏允许自然换行增高，不能与角标重叠。

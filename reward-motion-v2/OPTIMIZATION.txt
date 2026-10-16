@@ -81,3 +81,5 @@ HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 77.6 KB，精确体积与剩
 2026-10-16 紧凑布局：375 × 812px 内部屏幕中卡片 343 × 313px，连同顶部素材约 400px 高。底部 padding 16px、标题至倒计时 7px、券上方 12px、按钮上方 16px；不改字体、文案、配色及动效参数。窄屏允许换行增高。
 
 2026-10-16 背景色相：参照券内底色 #FDF3F4，将弹窗背景调整为 linear-gradient(#f9dfe2 0%,#fdf1f2 55%,#fff 100%)，保留原渐变位置、白色底部及其他配色。
+
+2026-10-16 文案：标题 Welcome Back!；券右侧 Repay on time / Enjoy instant benefits，保留显式换行。覆盖此前同位置文案，尺寸、配色与动效参数不变。
