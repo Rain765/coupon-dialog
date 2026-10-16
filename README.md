@@ -44,6 +44,80 @@ python3 -m http.server 8765 --bind 127.0.0.1
 
 预览使用模拟数据，尚未连接真实优惠券和申请接口。业务口径为「6 天内申请，还款时抵扣」；资格、金额、截止时刻与实际抵扣由后端决定。
 
+### 后端返回 JSON 示例
+
+以下是建议的响应结构，**不是已上线接口**；示例约定 `code: 0` 表示请求成功，实际地址、鉴权、成功码与字段命名由前后端确认。无可用券时可返回 `{"code":0,"data":null}`。
+
+```json
+{
+  "code": 0,
+  "data": {
+    "id": "recall-coupon-20261016-001",
+    "amount": 50,
+    "eligible": true,
+    "status": "available",
+    "expiresAt": 1792619999000,
+    "serverNow": 1792130400000
+  }
+}
+```
+
+`amount` 是单位为 K 的整数，不是字符串或分；`eligible` 是布尔值。两个时间字段均为 UTC Unix **毫秒整数**，不要传秒级时间戳或日期字符串。示例时间仅用于说明格式：后端每次返回最新 `serverNow`，并按已确认的 6 个自然日规则计算 `expiresAt`；发放日是否计入、截止日具体时刻需业务确认，前端不自行推算。
+
+### 前端调用示例（Zepto）
+
+先在奖励动效脚本执行之前关闭演示数据：
+
+```html
+<script>
+  window.REWARD_COUPON_CONFIG = null;
+</script>
+<!-- 此后加载已适配的奖励组件 DOM、样式和脚本。 -->
+```
+
+待组件初始化完成、`window.RewardCoupon` 可用后执行以下代码。`/REPLACE_WITH_COUPON_ENDPOINT` 必须替换为真实读券接口；`host.startLoanApplication` 是宿主需要实现的申请入口，必须返回覆盖资格重验和申请交接流程的原生 Promise。当前仓库没有提供这个宿主方法，也没有创建该接口。
+
+```js
+// 同一页面首次获取优惠券数据的接入示例。
+window.RewardCoupon.close();
+window.Zepto.ajax({
+  url: '/REPLACE_WITH_COUPON_ENDPOINT',
+  type: 'GET',
+  dataType: 'json',
+  timeout: 10000,
+  success: function (res) {
+    if (!res || res.code !== 0 || !res.data) {
+      window.RewardCoupon.close();
+      return;
+    }
+    var data = res.data;
+    window.RewardCoupon.show({
+      id: data.id,
+      amount: data.amount,
+      eligible: data.eligible,
+      status: data.status,
+      expiresAt: data.expiresAt,
+      serverNow: data.serverNow
+    }, {
+      lowPerformance: false, // 替换为宿主设备策略；true 时静态展示。
+      onApply: function (coupon) {
+        return host.startLoanApplication({ couponId: coupon.id });
+      }
+    }).catch(function () {
+      window.RewardCoupon.close();
+    });
+  },
+  error: function () {
+    window.RewardCoupon.close();
+    // 宿主按现有流程处理登录失效、错误提示或重试，不回退演示券。
+  }
+});
+```
+
+组件会校验字段、资格、状态和有效期，动态显示金额并启动倒计时；无效数据不展示。申请失败应让 `onApply` 返回的 Promise reject，宿主通过 `couponapplyerror` 接入现有错误提示；不要直接返回 Zepto XHR，也不要把点击按钮当作已绑定或已抵扣。真实申请仍需后端重新校验并处理幂等绑定，还款时才按规则抵扣。
+
+此例针对首次获取：接入页面返回、重复请求或路由切换时，前端还需按接入清单增加请求序号/页面卸载保护，忽略旧响应，并重新获取券状态和服务端时间。继续复用项目的鉴权、CSRF 和错误处理机制。
+
 ## 生成交付包
 
 在仓库根目录运行：
