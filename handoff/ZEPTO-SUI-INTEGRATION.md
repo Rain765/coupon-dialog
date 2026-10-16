@@ -1,6 +1,6 @@
 # Zepto + SUI Mobile 项目接入清单
 
-交付版本：`final-2026-10-16-discount-tag`。保留 Y 轴 半圈（180°）动效；倒计时移回标题下方，券线框采用内联 SVG，分隔虚线采用 CSS 边框。
+交付版本：`final-2026-10-16-figma-background`。保留 Y 轴 半圈（180°）动效；倒计时移回标题下方，券线框采用内联 SVG，分隔虚线采用 CSS 边框。
 精确时间线、缓动和完整 API 见 [FRONTEND-INTEGRATION.md](FRONTEND-INTEGRATION.md)。
 
 ## 1. 已确认与待联调范围
