@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'reward-motion-v2'
 OUTPUT = ROOT / 'output' / 'zamcash-reward-final.zip'
 PREFIX = 'zamcash-reward-final/'
-VERSION = 'final-2026-10-16-fast-half-turn'
+VERSION = 'final-2026-10-16-fast-growth'
 
 
 def sha(data):
@@ -62,7 +62,7 @@ def main():
         'measurement': 'HTML/SVG gzip level 6; PNG/WebP identity; excludes HTTP headers, docs and ZIP overhead',
         'motion': {'axis': 'Y', 'turns': 0.5, 'degrees': 180, 'burst_particles': 12,
                    'rotation_ms': {'delay': 600, 'duration': 600},
-                   'growth_ms': {'delay': 600, 'duration': 1400}, 'interactive_at_ms': 2200},
+                   'growth_ms': {'delay': 600, 'duration': 700}, 'interactive_at_ms': 2200},
         'runtime_files': sizes,
         'other_files': [{'path': name, 'sha256': sha(data), 'raw_bytes': len(data)}
                         for name, data in payload.items() if not name.startswith('demo/')],

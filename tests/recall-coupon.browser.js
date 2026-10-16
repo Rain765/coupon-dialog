@@ -81,6 +81,10 @@ async (page) => {
     await window.RewardCoupon.replay();
     const a=document.querySelector('.reward-turn').getAnimations()[0];a.pause();if(a.effect.getTiming().duration!==600||a.effect.getTiming().delay!==600)throw new Error('rotation timing');let prev=null,total=0;
     for(let t=600;t<=1200;t+=5){a.currentTime=t;const m=new DOMMatrix(getComputedStyle(document.querySelector('.reward-turn')).transform);const angle=Math.atan2(-m.m13,m.m11)*180/Math.PI;if(prev!==null){let delta=angle-prev;while(delta>180)delta-=360;while(delta< -180)delta+=360;total+=delta}prev=angle}
+    const reveal=document.querySelector('.reward-reveal'),g=reveal.getAnimations()[0];g.pause();
+    if(g.effect.getTiming().duration!==700||g.effect.getTiming().delay!==600)throw new Error('growth timing');
+    const scales=[600,700,800,1000,1200,1250,1300].map(t=>{g.currentTime=t;return new DOMMatrix(getComputedStyle(reveal).transform).m11});
+    if(scales.some((v,i)=>i&&v<scales[i-1])||Math.abs(scales[0]-.08)>.001||Math.abs(scales[6]-1)>.001||scales[6]-scales[5]>=scales[5]-scales[4])throw new Error('growth must stay monotonic and slow to a soft stop');
     return total;
   });
   check(Math.abs(Math.abs(degrees)-180)<0.01,'half a Y-axis turn in 600ms');
@@ -104,7 +108,7 @@ async (page) => {
   });
   check(burst.count===12&&burst.reused,'12 burst nodes reused on replay');
   check(burst.varied&&Math.max(...burst.sizes)/Math.min(...burst.sizes)>4,'varied burst sizes and fresh paths');
-  check(burst.soft&&burst.cross>1&&burst.maxEnd<=1600,'soft curved burst finishes before card settles');
+  check(burst.soft&&burst.cross>1&&burst.maxEnd<=1600,'soft curved burst finishes by 1600ms');
   for (const width of [320,390,1200]) {
     await page.setViewportSize({width,height:1000});
     await page.evaluate(()=>window.RewardCoupon.show({id:'layout',amount:9999,eligible:true,status:'available',serverNow:Date.now(),expiresAt:Date.now()+60000},{lowPerformance:true,onApply:()=>{}}));
