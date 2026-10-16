@@ -79,11 +79,11 @@ async (page) => {
   // Sample the unchanged CSS rotation path at 5 ms intervals, including endpoints.
   const degrees = await page.evaluate(async()=>{
     await window.RewardCoupon.replay();
-    const a=document.querySelector('.reward-turn').getAnimations()[0];a.pause();let prev=null,total=0;
-    for(let t=600;t<=1800;t+=5){a.currentTime=t;const m=new DOMMatrix(getComputedStyle(document.querySelector('.reward-turn')).transform);const angle=Math.atan2(-m.m13,m.m11)*180/Math.PI;if(prev!==null){let delta=angle-prev;while(delta>180)delta-=360;while(delta< -180)delta+=360;total+=delta}prev=angle}
+    const a=document.querySelector('.reward-turn').getAnimations()[0];a.pause();if(a.effect.getTiming().duration!==600||a.effect.getTiming().delay!==600)throw new Error('rotation timing');let prev=null,total=0;
+    for(let t=600;t<=1200;t+=5){a.currentTime=t;const m=new DOMMatrix(getComputedStyle(document.querySelector('.reward-turn')).transform);const angle=Math.atan2(-m.m13,m.m11)*180/Math.PI;if(prev!==null){let delta=angle-prev;while(delta>180)delta-=360;while(delta< -180)delta+=360;total+=delta}prev=angle}
     return total;
   });
-  check(Math.abs(Math.abs(degrees)-180)<0.01,'exactly half a Y-axis turn');
+  check(Math.abs(Math.abs(degrees)-180)<0.01,'half a Y-axis turn in 600ms');
   const burst = await page.evaluate(async()=>{
     const rays=[...document.querySelectorAll('.burst-ray')],first=rays[0];
     const before=rays.map(e=>e.style.cssText).join();
