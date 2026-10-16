@@ -14,11 +14,11 @@ ZamCash Reward Motion — 半圈最终版（2026-10-16）
 - 卡片翻转：600–1200 ms，rotateY(-180deg) → rotateY(0deg)。中间关键帧 45.067141% 为 -60deg。
 - 第一段 cubic-bezier(.336590,.296449,.603158,.690273)；第二段 cubic-bezier(.230493,.438551,.530806,1)。保留加速减速曲线和柔和停稳，半圈旋转时长 600ms。
 - 卡片放大：600–1300 ms，scale(.08) → scale(1)，cubic-bezier(.35,0,.5,1)。
-- 按钮：1450–2200 ms 渐显，动画结束后解锁；不能改成固定 setTimeout 解锁。
+- 按钮：900–1300 ms 渐显，动画结束后解锁；不能改成固定 setTimeout 解锁。
 - 就绪装饰仅播放 2 次，正常播放最迟 8600 ms 全部停止。
 
 体积
-HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 77.3 KB，精确体积与剩余预算见交付包 asset-manifest.json。
+HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 77.4 KB，精确体积与剩余预算见交付包 asset-manifest.json。
 不含 HTTP 头、交付文档和 ZIP 容器开销。线上需为 HTML/SVG 开启 gzip；Python 预览服务不自动压缩。
 
 降级
@@ -71,3 +71,5 @@ HTML/SVG gzip level 6 + PNG/WebP 原始字节：约 77.3 KB，精确体积与剩
 2026-10-16 倍速半圈：旋转时长由 1200ms 缩短为 600ms，600–1200ms 完成 180°；保留原两段加速减速缓动、放大节奏及其他效果。
 
 2026-10-16 倍速放大：放大由 1400ms 缩短至 700ms，600–1300ms 完成；与 600–1200ms 的半圈旋转同时起步，保留末端 100ms 柔和收尾，其他效果不变。
+
+2026-10-16 提前按钮：900ms 开始，400ms 渐显后解锁；通过独立 scene-settle CSS 时钟保留 2200ms 装饰交接，后台暂停和静态降级逻辑保留。

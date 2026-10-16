@@ -5,7 +5,7 @@
 ## 当前基线与入口
 
 - 项目：ZamCash 非洲市场老用户召回优惠券，轻量 WebP + CSS + JavaScript，无第三方动画库。
-- 当前视觉版本：`final-2026-10-16-fast-growth`（2026-10-16）。本版放大时长由 1400ms 缩短至 700ms，与 600ms 半圈旋转同时开始，保留末尾减速缓冲，后续从 GitHub 最新 `main` 继续。
+- 当前视觉版本：`final-2026-10-16-early-button`（2026-10-16）。本版按钮提前至 900–1300ms 渐显，卡片放大停稳时即可点击；装饰交接仍为 2200ms，后续从 GitHub 最新 `main` 继续。
 - 仓库：<https://github.com/Rain765/coupon-dialog>。
 - 预览：<https://zamcash-reward-one-turn-20261015.sumu1212.chatgpt.site/>。
 - 运行入口：`reward-motion-v2/index.html`，内含页面、CSS、JavaScript；`star-v2.webp`、`reward-v2.webp` 和 `assets/` 已全部提交，可直接克隆运行。
@@ -27,7 +27,7 @@
 
 - 卡片和顶部奖励图绕竖直中轴 **Y 轴翻转半圈（180°）**，不是 Z 轴平面转圈，也不是早期 3 圈版本。
 - 旋转从 600ms 到 1200ms，`rotateY(-180deg)` → `rotateY(0deg)`；中间 45.067141% 为 -60deg。两段缓动分别为 `cubic-bezier(.336590,.296449,.603158,.690273)` 和 `cubic-bezier(.230493,.438551,.530806,1)`，保留停稳缓冲。
-- 连续放大从 600ms 到 1300ms，scale .08 → 1，缓动 `cubic-bezier(.35,0,.5,1)`；按钮在正常播放 2200ms 后解锁。旋转和缩放使用独立容器，不合并 transform。
+- 连续放大从 600ms 到 1300ms，scale .08 → 1，缓动 `cubic-bezier(.35,0,.5,1)`；按钮从 900ms 开始渐显，1300ms 后解锁。旋转和缩放使用独立容器，不合并 transform。
 - 爆散共 **12 个粒子：9 颗金星 + 3 个微光**。不要恢复到 18 个或更多。
 - 基础尺寸数组为 `[8,24,11,5,32,9,15,6,12,28,7,4]` px，乘以 0.9–1.1。其中索引 1、4、9（第 2、5、10 个粒子）是特意放大的三颗金星，基础尺寸为 24/32/28px。
 - 保留大小层次、柔和边缘、短光线拖尾、向外减速和向下加速形成的弧线。每次正常播放通过 `scatter()` 做有界随机变化，避免等大、等距、完全重复的直线放射。
@@ -46,7 +46,7 @@
 
 ## 性能与移动端兼容
 
-- 运行资源预算为 **80,000 字节以内**：HTML/SVG gzip level 6，WebP/PNG 按原始字节计，不包含文档、HTTP 头和 ZIP 开销。当前为 77,288 字节，约 77.3 KB；后续以实际重新打包测量为准。
+- 运行资源预算为 **80,000 字节以内**：HTML/SVG gzip level 6，WebP/PNG 按原始字节计，不包含文档、HTTP 头和 ZIP 开销。当前为 77,384 字节，约 77.4 KB；后续以实际重新打包测量为准。
 - 不引入第三方动画库、外部字体或不必要的大素材。优先复用已有透明 WebP；改图时保持透明边缘并重新测量体积。
 - 已修复手机端券线条丢失：外框采用内联 `.coupon-outline` SVG 与 `vector-effect="non-scaling-stroke"`，分隔线采用 CSS `border-left:1px dashed`。不要退回外部 SVG 背景或旋转细线实现。
 - 保留 `lowPerformance`、系统 `prefers-reduced-motion`、图片失败/解码超过 1200ms 的静态降级与 SVG 兜底；静态模式仍须有正确倒计时和可用按钮，不能只关 CSS 动画却继续等待 `animationend`。

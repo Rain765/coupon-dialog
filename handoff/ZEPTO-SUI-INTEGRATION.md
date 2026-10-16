@@ -1,6 +1,6 @@
 # Zepto + SUI Mobile 项目接入清单
 
-交付版本：`final-2026-10-16-fast-growth`。保留 Y 轴 半圈（180°）动效；倒计时移回标题下方，券线框采用内联 SVG，分隔虚线采用 CSS 边框。
+交付版本：`final-2026-10-16-early-button`。保留 Y 轴 半圈（180°）动效；倒计时移回标题下方，券线框采用内联 SVG，分隔虚线采用 CSS 边框。
 精确时间线、缓动和完整 API 见 [FRONTEND-INTEGRATION.md](FRONTEND-INTEGRATION.md)。
 
 ## 1. 已确认与待联调范围
@@ -33,7 +33,7 @@
 | 申请按钮 | `onApply` 返回覆盖真实异步流程的 Promise；传入券 ID；成功交接到申请流程后 resolve，失败 reject | 连点仅一笔请求；失败可恢复按钮；点击不代表已绑定或已抵扣 |
 | 错误提示 | 使用现有项目提示组件处理 `couponapplyerror`，只展示安全的业务提示 | 不向用户直接输出请求对象、堆栈；登录失效走宿主登录流程 |
 | 生命周期 | 页面卸载时清理；返回页面 / 长时间后台恢复后重新取得券状态和服务端时间 | 防止旧响应重开券、重复监听和计时；`destroy()` 后不能复用同一实例，需重新初始化组件 |
-| 发布 | 更新 img、preload、CSS mask/background 的资源路径；HTML/SVG 开 gzip | 合并后重新测量实际发送资源；参考演示总量 77,288 字节，低于 80,000 字节 |
+| 发布 | 更新 img、preload、CSS mask/background 的资源路径；HTML/SVG 开 gzip | 合并后重新测量实际发送资源；参考演示总量 77,384 字节，低于 80,000 字节 |
 
 当前脚本 IIFE 内的 `$` 只是本地 `getElementById` 帮助函数，不覆盖 `window.$`。拆分时保持作用域，避免与 Zepto 混用。当前项目按整页加载接入即可；若后续启用 SUI 路由，应接到项目的页面挂载/卸载事件，不能只依赖首次 `DOMContentLoaded`。
 

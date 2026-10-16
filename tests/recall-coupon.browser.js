@@ -16,6 +16,10 @@ async (page) => {
   }));
   check(initial.title === 'Welcome back!' && initial.label === 'Repayment discount' && /^\d{2}d \d{2}h \d{2}m \d{2}s$/.test(initial.time) && initial.button === 'Apply now' && initial.copy === 'Pay on time\nand reduce your loan cost', 'approved copy');
   check(initial.enabled, 'animation unlock');
+  await page.evaluate(()=>window.RewardCoupon.replay());await page.waitForTimeout(1400);
+  check(await page.evaluate(()=>!document.querySelector('#claim').disabled&&document.querySelector('#screen').classList.contains('is-playing')&&!document.querySelector('#screen').classList.contains('is-ready')),'early button unlock preserves decoration timeline');
+  await page.waitForTimeout(900);
+  check(await page.locator('#screen').evaluate(e=>e.classList.contains('is-ready')),'decoration handoff remains at 2200ms');
   await page.reload(); await page.waitForTimeout(2400);
   check(await page.locator('#coupon-countdown').getAttribute('datetime') === initial.deadline, 'reload preserves deadline');
   await page.locator('#replay').click(); await page.waitForTimeout(2400);

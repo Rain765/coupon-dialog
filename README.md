@@ -126,6 +126,6 @@ window.Zepto.ajax({
 python3 handoff/package.py
 ```
 
-生成 `output/zamcash-reward-final.zip`，包含演示源码、素材、接入说明和 SHA-256 校验清单。脚本校验运行资源不超过 80,000 字节；当前约 77.3 KB，按 HTML/SVG gzip level 6 + PNG/WebP 原始大小计算，不含文档和 ZIP 开销。本地 Python 服务器不会自动开启 gzip，线上需单独配置。
+生成 `output/zamcash-reward-final.zip`，包含演示源码、素材、接入说明和 SHA-256 校验清单。脚本校验运行资源不超过 80,000 字节；当前约 77.4 KB，按 HTML/SVG gzip level 6 + PNG/WebP 原始大小计算，不含文档和 ZIP 开销。本地 Python 服务器不会自动开启 gzip，线上需单独配置。
 
 交付包内的 `docs/API-EXAMPLES.md` 由本页对接说明、后端 JSON 和前端调用示例自动生成，确保重新打包时同步最新内容。
