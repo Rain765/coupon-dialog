@@ -34,6 +34,8 @@ python3 -m http.server 8765 --bind 127.0.0.1
 
 ## 前端接入说明
 
+优惠券弹窗已预留数据接入口，目前仍使用演示数据，**尚未接入真实后端接口**。后端需提供：`amount`（券金额，单位 K，1–9999 整数）、`expiresAt`（申请截止时间）、`serverNow`（服务端当前时间），时间均为 Unix 毫秒时间戳；另提供 `id`（券 ID）、`eligible`（是否有资格）、`status`（可用状态为 `available`）。前端获取数据后通过 `RewardCoupon.show()` 展示，倒计时每秒更新、到期关闭。业务口径：**6 天内申请，还款时抵扣**。
+
 - [Zepto + SUI Mobile 接入清单](handoff/ZEPTO-SUI-INTEGRATION.md)：前端适配项、后端字段、请求示例及联调要求，现有项目建议先读此文档。
 - [完整接入说明](handoff/FRONTEND-INTEGRATION.md)：组件 API、动效时间线、缓动参数、倒计时与低性能降级。
 - [交付包说明](handoff/README.md)：打包后的目录结构、资源及验收范围。
