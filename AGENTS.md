@@ -5,7 +5,7 @@
 ## 当前基线与入口
 
 - 项目：ZamCash 非洲市场老用户召回优惠券，轻量 WebP + CSS + JavaScript，无第三方动画库。
-- 当前视觉版本：`final-2026-10-16-clear-center`（2026-10-16）。本版奖励图中心清晰、外缘柔化，沿用同一张 WebP；按钮及动效时间线保持不变，后续从 GitHub 最新 `main` 继续。
+- 当前视觉版本：`final-2026-10-16-soft-red-shadow`（2026-10-16）。本版奖励图底部增加浅红柔和投影，保留中心清晰和外缘柔化，沿用同一张 WebP；按钮及动效时间线保持不变，后续从 GitHub 最新 `main` 继续。
 - 仓库：<https://github.com/Rain765/coupon-dialog>。
 - 预览：<https://zamcash-reward-one-turn-20261015.sumu1212.chatgpt.site/>。
 - 运行入口：`reward-motion-v2/index.html`，内含页面、CSS、JavaScript；`star-v2.webp`、`reward-v2.webp` 和 `assets/` 已全部提交，可直接克隆运行。
@@ -21,6 +21,7 @@
 - 倒计时位于标题下方，示例 `05d 23h 59m 59s`，每秒更新；单位使用单字母 d/h/m/s。数字黑色、24px、粗体，每组两位数字后为白色圆角矩形；单位 13px。不要移回优惠券角标位置。
 - 优惠券保持紧凑：最小高度 76px；右侧文字 padding 为 `20px 10px 14px`，比之前上移 4px；窄屏允许自然换行增高，不能与角标重叠。
 - 顶部奖励图左下飘带为红色，保留 `.hero-art { filter:blur(.55px) }` 柔化底层，`.hero:after` 复用原图叠加清晰中心并以径向遮罩渐隐至外缘，不把模糊加到卡片或文字上。素材编辑历史在 `handoff/ASSET-CHANGES.md`。
+- 顶部素材底部使用 `.hero:before` 浅红椭圆接触影：left 18px / right 8px / bottom -1px / height 24px，中心红色透明度 0.16，38% 处为 0.07，74% 处透明。仅 CSS 静态渐变，不新增素材或动画滤镜。
 - 手机端动效预览位于标题栏下方最上面，演示控制区排在其后。不要增加用户未要求的说明、徽标、水印或预览提示。
 
 ## 动效：保持半圈与自然爆散
@@ -46,7 +47,7 @@
 
 ## 性能与移动端兼容
 
-- 运行资源预算为 **80,000 字节以内**：HTML/SVG gzip level 6，WebP/PNG 按原始字节计，不包含文档、HTTP 头和 ZIP 开销。当前为 77,506 字节，约 77.5 KB；后续以实际重新打包测量为准。
+- 运行资源预算为 **80,000 字节以内**：HTML/SVG gzip level 6，WebP/PNG 按原始字节计，不包含文档、HTTP 头和 ZIP 开销。当前为 77,618 字节，约 77.6 KB；后续以实际重新打包测量为准。
 - 不引入第三方动画库、外部字体或不必要的大素材。优先复用已有透明 WebP；改图时保持透明边缘并重新测量体积。
 - 已修复手机端券线条丢失：外框采用内联 `.coupon-outline` SVG 与 `vector-effect="non-scaling-stroke"`，分隔线采用 CSS `border-left:1px dashed`。不要退回外部 SVG 背景或旋转细线实现。
 - 保留 `lowPerformance`、系统 `prefers-reduced-motion`、图片失败/解码超过 1200ms 的静态降级与 SVG 兜底；静态模式仍须有正确倒计时和可用按钮，不能只关 CSS 动画却继续等待 `animationend`。

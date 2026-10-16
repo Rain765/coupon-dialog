@@ -18,6 +18,8 @@
 }
 .star-sheen:after{content:'';position:absolute;inset:-15% -60%;background:linear-gradient(110deg,transparent 40%,#fff9e516 46%,#fffdf6a6 50%,#fff9e524 54%,transparent 60%);opacity:0;transform:translateX(-45%)}
 .welcome-star:before{content:'';position:absolute;inset:-25%;z-index:-1;background:radial-gradient(ellipse,#ffe7a724,transparent 65%)}
+/* A faint warm contact shadow grounds the illustration without another asset. */
+.hero:before{content:'';position:absolute;left:18px;right:8px;bottom:-1px;height:24px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse,rgba(170,45,63,.16) 0%,rgba(190,57,76,.07) 38%,rgba(190,57,76,0) 74%)}
 /* Restore central detail over the softly blurred original; reuse the same asset. */
 @supports (mask-image:radial-gradient(black,transparent)) or (-webkit-mask-image:radial-gradient(black,transparent)){
 .hero:after{content:'';position:absolute;inset:0;background:url('reward-v2.webp') center/contain no-repeat;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse at 52% 52%,#000 38%,#000e 55%,transparent 85%);mask-image:radial-gradient(ellipse at 52% 52%,#000 38%,#000e 55%,transparent 85%)}
@@ -116,7 +118,7 @@
 <main class="layout">
 <section class="intro" aria-label="演示控制"><div class="pills"><span class="pill">WebP + CSS + JavaScript</span></div>
 <div class="controls"><label class="control-label" for="amount">演示优惠券金额</label><div class="input-row"><div class="amount-box"><span class="currency">K</span><input id="amount" type="number" min="1" max="9999" step="1" value="25" inputmode="numeric"></div><button class="replay" id="replay" type="button">↻ 重播动效</button></div><label class="toggle"><input type="checkbox" id="low-motion">低性能模式 · 直接展示奖励</label></div>
-<div class="spec"><div><strong>77.5 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
+<div class="spec"><div><strong>77.6 KB</strong><small>压缩页面 + 全部素材</small></div><div><strong>2</strong><small>透明 WebP 图片</small></div><div><strong>2.2 s</strong><small>主体入场时长</small></div></div><p class="note">低性能模式直接展示卡片，装饰动画播放后停止。体积按 HTML/SVG gzip + 图片计算；低端设备仍需真机验证。</p></section>
 <section class="preview" aria-label="手机内奖励效果预览"><div class="device" id="device"><div class="screen is-loading is-used" id="screen">
 <div class="loan-page" id="loan-page" aria-hidden="true" lang="en">
 <div class="zam-statusbar"><img src="assets/bcb84.svg" alt="9:41"><img src="assets/d66f0.svg" alt=""></div>
